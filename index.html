@@ -1,945 +1,2183 @@
-<!DOCTYPE html>  <html lang="bn">  
-<head>  
-    <meta charset="UTF-8">  
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">  <title>Gaming Guru Shop</title>  
-
-<style>  
-    * {  
-        box-sizing: border-box;  
-    }  
-
-    html {  
-        scroll-behavior: smooth;  
-    }  
-
-    body {  
-        margin: 0;  
-        font-family: Arial, "Noto Sans Bengali", sans-serif;  
-        background: #f5f6f8;  
-        color: #222;  
-    }  
-
-    /* ================= HEADER ================= */  
-
-    header {  
-        background: #111;  
-        color: white;  
-        padding: 15px 18px;  
-        display: flex;  
-        justify-content: space-between;  
-        align-items: center;  
-        position: sticky;  
-        top: 0;  
-        z-index: 1000;  
-    }  
-
-    .logo {  
-        font-size: 23px;  
-        font-weight: bold;  
-    }  
-
-    .cart-btn {  
-        border: 0;  
-        background: white;  
-        color: #111;  
-        padding: 9px 14px;  
-        border-radius: 22px;  
-        font-size: 14px;  
-        cursor: pointer;  
-    }  
-
-    /* ================= HERO ================= */  
-
-    .hero {  
-        background: white;  
-        text-align: center;  
-        padding: 60px 20px;  
-    }  
-
-    .hero h1 {  
-        font-size: 35px;  
-        margin: 0 0 15px;  
-    }  
-
-    .hero p {  
-        color: #666;  
-        font-size: 18px;  
-    }  
-
-    .shop-button {  
-        display: inline-block;  
-        margin-top: 15px;  
-        background: #111;  
-        color: white;  
-        padding: 13px 25px;  
-        border-radius: 8px;  
-        text-decoration: none;  
-    }  
-
-    /* ================= SECTION ================= */  
-
-    .section {  
-        max-width: 1100px;  
-        margin: auto;  
-        padding: 35px 18px;  
-    }  
-
-    .section-title {  
-        text-align: center;  
-        margin-bottom: 20px;  
-    }  
-
-    /* ================= SEARCH ================= */  
-
-    .search {  
-        width: 100%;  
-        max-width: 550px;  
-        display: block;  
-        margin: 0 auto 25px;  
-        padding: 14px 16px;  
-        border: 1px solid #ddd;  
-        border-radius: 10px;  
-        font-size: 16px;  
-        outline: none;  
-    }  
-
-    .search:focus {  
-        border-color: #111;  
-    }  
-
-    /* ================= PRODUCTS ================= */  
-
-    .products {  
-        display: grid;  
-        grid-template-columns: repeat(2, 1fr);  
-        gap: 18px;  
-    }  
-
-    .product {  
-        background: white;  
-        border-radius: 15px;  
-        overflow: hidden;  
-        box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);  
-    }  
-
-    .product-image {  
-        height: 190px;  
-        background: #e9e9e9;  
-        display: flex;  
-        align-items: center;  
-        justify-content: center;  
-        color: #777;  
-        font-size: 16px;  
-        overflow: hidden;  
-    }  
-
-    .product-image img {  
-        width: 100%;  
-        height: 100%;  
-        object-fit: cover;  
-    }  
-
-    .product-info {  
-        padding: 16px;  
-    }  
-
-    .product h3 {  
-        margin: 0 0 8px;  
-        font-size: 20px;  
-    }  
-
-    .product p {  
-        color: #666;  
-        font-size: 14px;  
-        line-height: 1.6;  
-    }  
-
-    .price {  
-        font-size: 21px;  
-        font-weight: bold;  
-        margin: 12px 0;  
-    }  
-
-    .order-button {  
-        width: 100%;  
-        border: 0;  
-        background: #111;  
-        color: white;  
-        padding: 12px;  
-        border-radius: 8px;  
-        font-size: 16px;  
-        cursor: pointer;  
-    }  
-
-    .order-button:active {  
-        transform: scale(0.98);  
-    }  
-
-    /* ================= CART ================= */  
-
-    .cart-box {  
-        position: fixed;  
-        right: -100%;  
-        top: 0;  
-        width: 90%;  
-        max-width: 420px;  
-        height: 100%;  
-        background: white;  
-        z-index: 2000;  
-        box-shadow: -5px 0 20px rgba(0, 0, 0, 0.2);  
-        padding: 20px;  
-        overflow-y: auto;  
-        transition: 0.3s;  
-    }  
-
-    .cart-box.active {  
-        right: 0;  
-    }  
-
-    .cart-header {  
-        display: flex;  
-        justify-content: space-between;  
-        align-items: center;  
-        border-bottom: 1px solid #ddd;  
-        padding-bottom: 12px;  
-    }  
-
-    .close-btn {  
-        border: 0;  
-        background: #eee;  
-        padding: 7px 11px;  
-        border-radius: 6px;  
-        cursor: pointer;  
-    }  
-
-    .cart-item {  
-        border-bottom: 1px solid #eee;  
-        padding: 15px 0;  
-    }  
-
-    .cart-item-title {  
-        font-weight: bold;  
-        margin-bottom: 7px;  
-    }  
-
-    .qty {  
-        display: flex;  
-        align-items: center;  
-        gap: 10px;  
-        margin-top: 8px;  
-    }  
-
-    .qty button {  
-        border: 0;  
-        background: #111;  
-        color: white;  
-        width: 30px;  
-        height: 30px;  
-        border-radius: 5px;  
-        cursor: pointer;  
-        font-size: 18px;  
-    }  
-
-    .remove-btn {  
-        margin-top: 8px;  
-        border: 0;  
-        background: #eee;  
-        padding: 6px 10px;  
-        border-radius: 5px;  
-        cursor: pointer;  
-    }  
-
-    .total {  
-        font-size: 21px;  
-        font-weight: bold;  
-        margin: 20px 0;  
-    }  
-
-    /* ================= ORDER FORM ================= */  
-
-    .order-form {  
-        margin-top: 20px;  
-    }  
-
-    .order-form h3 {  
-        margin-bottom: 12px;  
-    }  
-
-    .order-form input,  
-    .order-form textarea,  
-    .order-form select {  
-        width: 100%;  
-        padding: 12px;  
-        margin-bottom: 10px;  
-        border: 1px solid #ddd;  
-        border-radius: 8px;  
-        font-size: 15px;  
-    }  
-
-    .order-form textarea {  
-        height: 85px;  
-        resize: none;  
-    }  
-
-    .whatsapp {  
-        width: 100%;  
-        border: 0;  
-        background: #25D366;  
-        color: white;  
-        padding: 13px;  
-        border-radius: 8px;  
-        font-size: 16px;  
-        font-weight: bold;  
-        cursor: pointer;  
-    }  
-
-    /* ================= PAYMENT ================= */  
-
-    .payment {  
-        background: white;  
-        border-radius: 14px;  
-        padding: 25px;  
-        margin-top: 20px;  
-        text-align: center;  
-    }  
-
-    .payment p {  
-        line-height: 1.8;  
-    }  
-
-    /* ================= CONTACT ================= */  
-
-    .contact {  
-        text-align: center;  
-        background: white;  
-        padding: 30px 20px;  
-    }  
-
-    /* ================= FOOTER ================= */  
-
-    footer {  
-        margin-top: 30px;  
-        padding: 30px 20px;  
-        text-align: center;  
-        background: #111;  
-        color: white;  
-    }  
-
-    /* ================= EMPTY CART ================= */  
-
-    .empty-cart {  
-        text-align: center;  
-        padding: 30px 10px;  
-        color: #777;  
-    }  
-
-    /* ================= MOBILE ================= */  
-
-    @media (max-width: 600px) {  
-
-        .products {  
-            grid-template-columns: 1fr;  
-        }  
-
-        .hero h1 {  
-            font-size: 29px;  
-        }  
-
-        .logo {  
-            font-size: 20px;  
-        }  
-    }  
-</style>
-
-</head>  <body>  <!-- ================= HEADER ================= -->  
-
-<header>  
-
-    <div class="logo">  
-        Gaming Guru Shop  
-    </div>  
-
-    <button class="cart-btn" onclick="openCart()">  
-        🛒 কার্ট (<span id="cartCount">0</span>)  
-    </button>  
-
-</header>  
-
-
-<!-- ================= HERO ================= -->  
-
-<section class="hero">  
-
-    <h1>  
-        Gaming Guru Shop-এ স্বাগতম  
-    </h1>  
-
-    <p>  
-        ভালো পণ্য, ভালো দাম এবং সহজ অর্ডার  
-    </p>  
-
-    <a href="#products" class="shop-button">  
-        🛍️ পণ্য দেখুন  
-    </a>  
-
-</section>  
-
-
-<!-- ================= PRODUCTS ================= -->  
-
-<section class="section" id="products">  
-
-    <h2 class="section-title">  
-        🛍️ আমাদের পণ্য  
-    </h2>  
-
-    <input  
-        type="text"  
-        id="search"  
-        class="search"  
-        placeholder="🔎 পণ্য খুঁজুন..."  
-        oninput="searchProducts()"  
-    >  
-
-    <div class="products" id="productList">  
-
-
-        <!-- PRODUCT 1 -->  
-
-        <div  
-            class="product"  
-            data-name="SR Safety Helmet"  
-        >  
-
-            <div class="product-image">  
-                <img  
-                    src="IMG_20260813_165650.jpg"  
-                    alt="SR Safety Helmet"  
-                >  
-            </div>  
-
-            <div class="product-info">  
-
-                <h3>  
-                    SR Safety Helmet  
-                </h3>  
-
-                <p>  
-                    Industrial Safety Helmet.  
-                </p>  
-
-                <div class="price">  
-                    ৳150  
-                </div>  
-
-                <button  
-                    class="order-button"  
-                    onclick="addToCart('SR Safety Helmet', 150)"  
-                >  
-                    🛒 কার্টে যোগ করুন  
-                </button>  
-
-            </div>  
-
-        </div>  
-
-
-        <!-- PRODUCT 2 -->  
-
-        <div  
-            class="product"  
-            data-name="Another Product"  
-        >  
-
-            <div class="product-image">  
-                <span>📷 Product Image</span>  
-            </div>  
-
-            <div class="product-info">  
-
-                <h3>  
-                    Another Product  
-                </h3>  
-
-                <p>  
-                    এটি আমাদের দ্বিতীয় নমুনা পণ্য।  
-                </p>  
-
-                <div class="price">  
-                    ৳700  
-                </div>  
-
-                <button  
-                    class="order-button"  
-                    onclick="addToCart('Another Product', 700)"  
-                >  
-                    🛒 কার্টে যোগ করুন  
-                </button>  
-
-            </div>  
-
-        </div>  
-
-
-        <!-- PRODUCT 3 -->  
-
-        <div  
-            class="product"  
-            data-name="Third Product"  
-        >  
-
-            <div class="product-image">  
-                <span>📷 Product Image</span>  
-            </div>  
-
-            <div class="product-info">  
-
-                <h3>  
-                    Third Product  
-                </h3>  
-
-                <p>  
-                    এটি আমাদের তৃতীয় নমুনা পণ্য।  
-                </p>  
-
-                <div class="price">  
-                    ৳900  
-                </div>  
-
-                <button  
-                    class="order-button"  
-                    onclick="addToCart('Third Product', 900)"  
-                >  
-                    🛒 কার্টে যোগ করুন  
-                </button>  
-
-            </div>  
+<!DOCTYPE html>
+<html lang="bn">
 
-        </div>  
-
-
-        <!-- PRODUCT 4 -->  
-
-        <div  
-            class="product"  
-            data-name="Fourth Product"  
-        >  
+<head>
 
-            <div class="product-image">  
-                <span>📷 Product Image</span>  
-            </div>  
+    <meta charset="UTF-8">
 
-            <div class="product-info">  
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-                <h3>  
-                    Fourth Product  
-                </h3>  
+    <title>Gaming Guru Shop</title>
 
-                <p>  
-                    এটি আমাদের চতুর্থ নমুনা পণ্য।  
-                </p>  
 
-                <div class="price">  
-                    ৳1200  
-                </div>  
+    <style>
 
-                <button  
-                    class="order-button"  
-                    onclick="addToCart('Fourth Product', 1200)"  
-                >  
-                    🛒 কার্টে যোগ করুন  
-                </button>  
+        * {
+            box-sizing: border-box;
+        }
 
-            </div>  
 
-        </div>  
+        html {
+            scroll-behavior: smooth;
+        }
 
-    </div>  
 
-</section>  
+        body {
+            margin: 0;
+            font-family: Arial, "Noto Sans Bengali", sans-serif;
+            background: #f5f6f8;
+            color: #222;
+        }
 
 
-<!-- ================= PAYMENT INFO ================= -->  
+        /* ================= HEADER ================= */
 
-<section class="section">  
+        header {
+            background: #111;
+            color: white;
+            padding: 15px 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
 
-    <div class="payment">  
 
-        <h2>  
-            💳 পেমেন্ট  
-        </h2>  
+        .logo {
+            font-size: 23px;
+            font-weight: bold;
+        }
 
-        <p>  
-            বর্তমানে Cash on Delivery ব্যবহার করতে পারেন।  
-        </p>  
 
-        <p>  
-            পরে এখানে bKash / Nagad / অন্যান্য payment  
-            ব্যবস্থা যোগ করা যাবে।  
-        </p>  
+        .cart-btn {
+            border: 0;
+            background: white;
+            color: #111;
+            padding: 9px 14px;
+            border-radius: 22px;
+            font-size: 14px;
+            cursor: pointer;
+        }
 
-    </div>  
 
-</section>  
+        /* ================= HERO ================= */
 
+        .hero {
+            background: white;
+            text-align: center;
+            padding: 60px 20px;
+        }
 
-<!-- ================= CONTACT ================= -->  
 
-<section class="contact" id="contact">  
+        .hero h1 {
+            font-size: 35px;
+            margin: 0 0 15px;
+        }
 
-    <h2>  
-        📞 যোগাযোগ  
-    </h2>  
 
-    <p>  
-        অর্ডার বা যেকোনো তথ্যের জন্য আমাদের সাথে যোগাযোগ করুন।  
-    </p>  
+        .hero p {
+            color: #666;
+            font-size: 18px;
+        }
 
-    <p>  
-        📱 ফোন: 01309302602  
-    </p>  
 
-    <p>  
-        📍 ঠিকানা: ঢাকা, নবাবপুর  
-    </p>  
+        .shop-button {
+            display: inline-block;
+            margin-top: 15px;
+            background: #111;
+            color: white;
+            padding: 13px 25px;
+            border-radius: 8px;
+            text-decoration: none;
+        }
 
-</section>  
 
+        /* ================= SECTION ================= */
 
-<!-- ================= FOOTER ================= -->  
+        .section {
+            max-width: 1100px;
+            margin: auto;
+            padding: 35px 18px;
+        }
 
-<footer>  
 
-    <h3>  
-        Gaming Guru Shop  
-    </h3>  
+        .section-title {
+            text-align: center;
+            margin-bottom: 20px;
+        }
 
-    <p>  
-        আপনার পছন্দের পণ্য সহজেই অর্ডার করুন।  
-    </p>  
 
-    <p>  
-        © 2026 Gaming Guru Shop  
-    </p>  
+        /* ================= SEARCH ================= */
 
-</footer>  
+        .search {
+            width: 100%;
+            max-width: 550px;
+            display: block;
+            margin: 0 auto 25px;
+            padding: 14px 16px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            outline: none;
+        }
 
 
-<!-- ================= CART PANEL ================= -->  
+        .search:focus {
+            border-color: #111;
+        }
 
-<div class="cart-box" id="cartBox">  
 
-    <div class="cart-header">  
+        /* ================= PRODUCTS ================= */
 
-        <h2>  
-            🛒 আপনার কার্ট  
-        </h2>  
+        .products {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
 
-        <button  
-            class="close-btn"  
-            onclick="closeCart()"  
-        >  
-            ✕  
-        </button>  
 
-    </div>  
+        .product {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+        }
 
 
-    <div id="cartItems"></div>  
+        .product-image {
+            height: 190px;
+            background: #e9e9e9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
 
 
-    <div class="total">  
-        মোট: ৳<span id="cartTotal">0</span>  
-    </div>  
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
 
 
-    <!-- ORDER FORM -->  
+        .product-info {
+            padding: 16px;
+        }
 
-    <div class="order-form">  
 
-        <h3>  
-            📦 অর্ডারের তথ্য  
-        </h3>  
+        .product h3 {
+            margin: 0 0 8px;
+            font-size: 20px;
+        }
 
-        <input  
-            type="text"  
-            id="customerName"  
-            placeholder="আপনার নাম"  
-        >  
 
-        <input  
-            type="tel"  
-            id="customerPhone"  
-            placeholder="মোবাইল নম্বর"  
-        >  
+        .product p {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.6;
+        }
 
-        <textarea  
-            id="customerAddress"  
-            placeholder="সম্পূর্ণ ঠিকানা"  
-        ></textarea>  
 
-        <select id="paymentMethod">  
+        .price {
+            font-size: 21px;
+            font-weight: bold;
+            margin: 12px 0;
+        }
 
-            <option value="Cash on Delivery">  
-                Cash on Delivery  
-            </option>  
 
-            <option value="bKash">  
-                bKash  
-            </option>  
+        .order-button {
+            width: 100%;
+            border: 0;
+            background: #111;
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+        }
 
-            <option value="Nagad">  
-                Nagad  
-            </option>  
 
-        </select>  
+        .order-button:active {
+            transform: scale(0.98);
+        }
 
 
-        <button  
-            class="whatsapp"  
-            onclick="sendWhatsAppOrder()"  
-        >  
-            📱 WhatsApp-এ অর্ডার করুন  
-        </button>  
+        /* ================= CART OVERLAY ================= */
 
-    </div>  
+        .overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.45);
+            z-index: 1500;
+            display: none;
+        }
 
-</div>  
 
+        .overlay.active {
+            display: block;
+        }
 
-<!-- ================= JAVASCRIPT ================= -->  
 
-<script>  
+        /* ================= CART ================= */
 
-    const WHATSAPP_NUMBER = "8801611901506";  
+        .cart-box {
+            position: fixed;
+            right: -100%;
+            top: 0;
+            width: 92%;
+            max-width: 430px;
+            height: 100%;
+            background: white;
+            z-index: 2000;
+            box-shadow: -5px 0 20px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            overflow-y: auto;
+            transition: 0.3s;
+        }
 
 
-    /* ================= CART ================= */  
+        .cart-box.active {
+            right: 0;
+        }
 
-    let cart = [];  
 
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 12px;
+        }
 
-    /* ================= ADD TO CART ================= */  
 
-    function addToCart(name, price) {  
+        .close-btn {
+            border: 0;
+            background: #eee;
+            padding: 7px 11px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+        }
 
-        const existingProduct = cart.find(  
-            item => item.name === name  
-        );  
 
-        if (existingProduct) {  
+        /* ================= CART ITEM ================= */
 
-            existingProduct.quantity++;  
+        .cart-item {
+            border-bottom: 1px solid #eee;
+            padding: 15px 0;
+        }
 
-        } else {  
 
-            cart.push({  
-                name: name,  
-                price: price,  
-                quantity: 1  
-            });  
+        .cart-item-title {
+            font-weight: bold;
+            margin-bottom: 7px;
+        }
 
-        }  
 
-        updateCart();  
+        .qty {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 8px;
+        }
 
-        openCart();  
 
-    }  
+        .qty button {
+            border: 0;
+            background: #111;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+        }
 
 
-    /* ================= UPDATE CART ================= */  
+        .remove-btn {
+            margin-top: 8px;
+            border: 0;
+            background: #eee;
+            padding: 6px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
 
-    function updateCart() {  
 
-        const cartItems =  
-            document.getElementById("cartItems");  
+        .total {
+            font-size: 21px;
+            font-weight: bold;
+            margin: 20px 0;
+        }
 
-        const cartCount =  
-            document.getElementById("cartCount");  
 
-        const cartTotal =  
-            document.getElementById("cartTotal");  
+        .empty-cart {
+            text-align: center;
+            padding: 30px 10px;
+            color: #777;
+        }
 
 
-        cartItems.innerHTML = "";  
+        /* ================= CHECKOUT BUTTON ================= */
 
+        .checkout-btn {
+            width: 100%;
+            border: 0;
+            background: #1669d8;
+            color: white;
+            padding: 14px;
+            border-radius: 8px;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
 
-        if (cart.length === 0) {  
 
-            cartItems.innerHTML =  
-                '<div class="empty-cart">আপনার কার্ট খালি।</div>';  
+        /* ================= CHECKOUT PAGE ================= */
 
-            cartCount.innerText = "0";  
+        #checkoutSection {
+            display: none;
+        }
 
-            cartTotal.innerText = "0";  
 
-            return;  
+        .checkout-title {
+            background: #1669d8;
+            color: white;
+            padding: 13px;
+            border-radius: 7px;
+            font-size: 17px;
+            margin-bottom: 15px;
+        }
 
-        }  
 
+        .checkout-card {
+            background: white;
+            border-radius: 10px;
+            padding: 18px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
 
-        let total = 0;  
 
-        let count = 0;  
+        .checkout-card h3 {
+            margin-top: 0;
+        }
 
 
-        cart.forEach((item, index) => {  
+        /* ================= BILLING ================= */
 
-            const itemTotal =  
-                item.price * item.quantity;  
+        .form-group {
+            margin-bottom: 12px;
+        }
 
-            total += itemTotal;  
 
-            count += item.quantity;  
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 6px;
+        }
 
 
-            const div =  
-                document.createElement("div");  
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 7px;
+            font-size: 15px;
+            outline: none;
+        }
 
-            div.className = "cart-item";  
 
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            border-color: #1669d8;
+        }
 
-            div.innerHTML = `  
 
-                <div class="cart-item-title">  
-                    ${item.name}  
-                </div>  
+        .form-group textarea {
+            height: 85px;
+            resize: none;
+        }
 
-                <div>  
-                    ৳${item.price} × ${item.quantity}  
-                </div>  
 
-                <div class="qty">  
+        /* ================= ORDER SUMMARY ================= */
 
-                    <button  
-                        onclick="changeQuantity(${index}, -1)"  
-                    >  
-                        −  
-                    </button>  
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+            font-size: 14px;
+        }
 
-                    <strong>  
-                        ${item.quantity}  
-                    </strong>  
 
-                    <button  
-                        onclick="changeQuantity(${index}, 1)"  
-                    >  
-                        +  
-                    </button>  
+        .summary-total {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            font-size: 20px;
+            font-weight: bold;
+        }
 
-                </div>  
 
-                <button  
-                    class="remove-btn"  
-                    onclick="removeFromCart(${index})"  
-                >  
-                    পণ্যটি বাদ দিন  
-                </button>  
+        /* ================= PAYMENT ================= */
 
-            `;  
+        .payment-option {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 13px;
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
 
 
-            cartItems.appendChild(div);  
+        .payment-option:hover {
+            border-color: #1669d8;
+        }
 
-        });  
 
+        .payment-option input {
+            margin-right: 8px;
+        }
 
-        cartCount.innerText = count;  
 
-        cartTotal.innerText = total;  
+        .payment-details {
+            display: none;
+            background: #f7f7f7;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 10px;
+        }
 
-    }  
 
+        .payment-details.active {
+            display: block;
+        }
 
-    /* ================= CHANGE QUANTITY ================= */  
 
-    function changeQuantity(index, amount) {  
+        .payment-number {
+            background: white;
+            border: 1px solid #ddd;
+            padding: 12px;
+            border-radius: 7px;
+            text-align: center;
+            font-size: 19px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
 
-        cart[index].quantity += amount;  
 
+        .copy-btn {
+            width: 100%;
+            border: 0;
+            background: #222;
+            color: white;
+            padding: 10px;
+            border-radius: 7px;
+            cursor: pointer;
+        }
 
-        if (cart[index].quantity <= 0) {  
 
-            cart.splice(index, 1);  
+        .payment-instruction {
+            font-size: 14px;
+            line-height: 1.7;
+            color: #444;
+        }
 
-        }  
 
+        /* ================= PLACE ORDER ================= */
 
-        updateCart();  
+        .place-order {
+            width: 100%;
+            border: 0;
+            background: #25D366;
+            color: white;
+            padding: 14px;
+            border-radius: 8px;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+        }
 
-    }  
 
+        /* ================= CONTACT ================= */
 
-    /* ================= REMOVE PRODUCT ================= */  
+        .contact {
+            text-align: center;
+            background: white;
+            padding: 30px 20px;
+        }
 
-    function removeFromCart(index) {  
 
-        cart.splice(index, 1);  
+        /* ================= FOOTER ================= */
 
-        updateCart();  
+        footer {
+            margin-top: 30px;
+            padding: 30px 20px;
+            text-align: center;
+            background: #111;
+            color: white;
+        }
 
-    }  
 
+        /* ================= MOBILE ================= */
 
-    /* ================= OPEN CART ================= */  
+        @media (max-width: 600px) {
 
-    function openCart() {  
+            .products {
+                grid-template-columns: 1fr;
+            }
 
-        document  
-            .getElementById("cartBox")  
-            .classList.add("active");  
 
-    }  
+            .hero h1 {
+                font-size: 29px;
+            }
 
 
-    /* ================= CLOSE CART ================= */  
+            .logo {
+                font-size: 20px;
+            }
 
-    function closeCart() {  
 
-        document  
-            .getElementById("cartBox")  
-            .classList.remove("active");  
+            .cart-box {
+                width: 94%;
+            }
 
-    }  
+        }
 
+    </style>
 
-    /* ================= SEARCH ================= */  
+</head>
 
-    function searchProducts() {  
 
-        const searchText =  
-            document  
-                .getElementById("search")  
-                .value  
-                .toLowerCase();  
+<body>
 
 
-        const products =  
-            document.querySelectorAll(".product");  
+    <!-- ================= HEADER ================= -->
 
+    <header>
 
-        products.forEach(product => {  
+        <div class="logo">
+            Gaming Guru Shop
+        </div>
 
-            const name =  
-                product  
-                    .getAttribute("data-name")  
-                    .toLowerCase();  
 
+        <button
+            class="cart-btn"
+            onclick="openCart()"
+        >
+            🛒 কার্ট
+            (<span id="cartCount">0</span>)
+        </button>
 
-            if (name.includes(searchText)) {  
+    </header>
 
-                product.style.display = "";  
 
-            } else {  
+    <!-- ================= HERO ================= -->
 
-                product.style.display = "none";  
+    <section class="hero">
 
-            }  
+        <h1>
+            Gaming Guru Shop-এ স্বাগতম
+        </h1>
 
-        });  
 
-    }  
+        <p>
+            ভালো পণ্য, ভালো দাম এবং সহজ অর্ডার
+        </p>
 
 
-    /* ===
+        <a
+            href="#products"
+            class="shop-button"
+        >
+            🛍️ পণ্য দেখুন
+        </a>
+
+    </section>
+
+
+    <!-- ================= PRODUCTS ================= -->
+
+    <section
+        class="section"
+        id="products"
+    >
+
+        <h2 class="section-title">
+            🛍️ আমাদের পণ্য
+        </h2>
+
+
+        <input
+            type="text"
+            id="search"
+            class="search"
+            placeholder="🔎 পণ্য খুঁজুন..."
+            oninput="searchProducts()"
+        >
+
+
+        <div
+            class="products"
+            id="productList"
+        >
+
+
+            <!-- ================= PRODUCT 1 ================= -->
+
+            <div
+                class="product"
+                data-name="SR Safety Helmet"
+            >
+
+                <div class="product-image">
+
+                    <img
+                        src="IMG_20260813_165650.jpg"
+                        alt="SR Safety Helmet"
+                    >
+
+                </div>
+
+
+                <div class="product-info">
+
+                    <h3>
+                        SR Safety Helmet
+                    </h3>
+
+
+                    <p>
+                        Industrial Safety Helmet.
+                    </p>
+
+
+                    <div class="price">
+                        ৳150
+                    </div>
+
+
+                    <button
+                        class="order-button"
+                        onclick="addToCart('SR Safety Helmet', 150)"
+                    >
+                        🛒 কার্টে যোগ করুন
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================= PRODUCT 2 ================= -->
+
+            <div
+                class="product"
+                data-name="Another Product"
+            >
+
+                <div class="product-image">
+
+                    <span>
+                        📷 Product Image
+                    </span>
+
+                </div>
+
+
+                <div class="product-info">
+
+                    <h3>
+                        Another Product
+                    </h3>
+
+
+                    <p>
+                        এটি আমাদের দ্বিতীয় পণ্য।
+                    </p>
+
+
+                    <div class="price">
+                        ৳700
+                    </div>
+
+
+                    <button
+                        class="order-button"
+                        onclick="addToCart('Another Product', 700)"
+                    >
+                        🛒 কার্টে যোগ করুন
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================= PRODUCT 3 ================= -->
+
+            <div
+                class="product"
+                data-name="Third Product"
+            >
+
+                <div class="product-image">
+
+                    <span>
+                        📷 Product Image
+                    </span>
+
+                </div>
+
+
+                <div class="product-info">
+
+                    <h3>
+                        Third Product
+                    </h3>
+
+
+                    <p>
+                        এটি আমাদের তৃতীয় পণ্য।
+                    </p>
+
+
+                    <div class="price">
+                        ৳900
+                    </div>
+
+
+                    <button
+                        class="order-button"
+                        onclick="addToCart('Third Product', 900)"
+                    >
+                        🛒 কার্টে যোগ করুন
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================= PRODUCT 4 ================= -->
+
+            <div
+                class="product"
+                data-name="Fourth Product"
+            >
+
+                <div class="product-image">
+
+                    <span>
+                        📷 Product Image
+                    </span>
+
+                </div>
+
+
+                <div class="product-info">
+
+                    <h3>
+                        Fourth Product
+                    </h3>
+
+
+                    <p>
+                        এটি আমাদের চতুর্থ পণ্য।
+                    </p>
+
+
+                    <div class="price">
+                        ৳1200
+                    </div>
+
+
+                    <button
+                        class="order-button"
+                        onclick="addToCart('Fourth Product', 1200)"
+                    >
+                        🛒 কার্টে যোগ করুন
+                    </button>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </section>
+        <!-- ================= CONTACT ================= -->
+
+    <section
+        class="contact"
+        id="contact"
+    >
+
+        <h2>
+            📞 যোগাযোগ
+        </h2>
+
+
+        <p>
+            অর্ডার বা যেকোনো তথ্যের জন্য আমাদের সাথে যোগাযোগ করুন।
+        </p>
+
+
+        <p>
+            📱 ফোন: 01309302602
+        </p>
+
+
+        <p>
+            📱 WhatsApp: +8801611901506
+        </p>
+
+
+        <p>
+            📍 ঠিকানা: Nawabpur, Dhaka, Bangladesh
+        </p>
+
+    </section>
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer>
+
+        <h3>
+            Gaming Guru Shop
+        </h3>
+
+
+        <p>
+            আপনার পছন্দের পণ্য সহজেই অর্ডার করুন।
+        </p>
+
+
+        <p>
+            © 2026 Gaming Guru Shop
+        </p>
+
+    </footer>
+
+
+    <!-- ================= OVERLAY ================= -->
+
+    <div
+        class="overlay"
+        id="overlay"
+        onclick="closeCart()"
+    ></div>
+
+
+    <!-- ================= CART ================= -->
+
+    <div
+        class="cart-box"
+        id="cartBox"
+    >
+
+        <div class="cart-header">
+
+            <h2>
+                🛒 Shopping Cart
+            </h2>
+
+
+            <button
+                class="close-btn"
+                onclick="closeCart()"
+            >
+                ✕
+            </button>
+
+        </div>
+
+
+        <!-- ================= CART ITEMS ================= -->
+
+        <div id="cartItems"></div>
+
+
+        <!-- ================= TOTAL ================= -->
+
+        <div class="total">
+            মোট: ৳<span id="cartTotal">0</span>
+        </div>
+
+
+        <!-- ================= CHECKOUT BUTTON ================= -->
+
+        <button
+            class="checkout-btn"
+            onclick="openCheckout()"
+        >
+            Checkout
+        </button>
+
+
+        <!-- ================= CHECKOUT SECTION ================= -->
+
+        <div
+            id="checkoutSection"
+        >
+
+
+            <div class="checkout-title">
+                🛒 SHOPPING CART → CHECKOUT
+            </div>
+
+
+            <!-- ================= ORDER SUMMARY ================= -->
+
+            <div class="checkout-card">
+
+                <h3>
+                    🧾 Order Summary
+                </h3>
+
+
+                <div id="checkoutSummary"></div>
+
+
+                <div class="summary-total">
+
+                    <span>
+                        Total
+                    </span>
+
+
+                    <span>
+                        ৳<span id="checkoutTotal">0</span>
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================= BILLING DETAILS ================= -->
+
+            <div class="checkout-card">
+
+                <h3>
+                    👤 Billing Details
+                </h3>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Full Name / নাম *
+                    </label>
+
+
+                    <input
+                        type="text"
+                        id="customerName"
+                        placeholder="আপনার পূর্ণ নাম"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Phone / মোবাইল *
+                    </label>
+
+
+                    <input
+                        type="tel"
+                        id="customerPhone"
+                        placeholder="01XXXXXXXXX"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Address / ঠিকানা *
+                    </label>
+
+
+                    <textarea
+                        id="customerAddress"
+                        placeholder="বাড়ি নম্বর, রাস্তা, এলাকা"
+                    ></textarea>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        District / জেলা
+                    </label>
+
+
+                    <select id="district">
+
+                        <option value="">
+                            জেলা নির্বাচন করুন
+                        </option>
+
+
+                        <option value="Dhaka">
+                            Dhaka
+                        </option>
+
+
+                        <option value="Chattogram">
+                            Chattogram
+                        </option>
+
+
+                        <option value="Rajshahi">
+                            Rajshahi
+                        </option>
+
+
+                        <option value="Khulna">
+                            Khulna
+                        </option>
+
+
+                        <option value="Barishal">
+                            Barishal
+                        </option>
+
+
+                        <option value="Sylhet">
+                            Sylhet
+                        </option>
+
+
+                        <option value="Rangpur">
+                            Rangpur
+                        </option>
+
+
+                        <option value="Mymensingh">
+                            Mymensingh
+                        </option>
+
+
+                        <option value="Comilla">
+                            Comilla
+                        </option>
+
+
+                        <option value="Gazipur">
+                            Gazipur
+                        </option>
+
+
+                        <option value="Narayanganj">
+                            Narayanganj
+                        </option>
+
+
+                        <option value="Narsingdi">
+                            Narsingdi
+                        </option>
+
+
+                        <option value="Bogra">
+                            Bogra
+                        </option>
+
+
+                        <option value="Jessore">
+                            Jessore
+                        </option>
+
+
+                        <option value="Cox's Bazar">
+                            Cox's Bazar
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Thana / উপজেলা
+                    </label>
+
+
+                    <input
+                        type="text"
+                        id="thana"
+                        placeholder="আপনার থানা / উপজেলা"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Postcode / পোস্টকোড
+                    </label>
+
+
+                    <input
+                        type="text"
+                        id="postcode"
+                        placeholder="পোস্টকোড"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- ================= PAYMENT INFORMATION ================= -->
+
+            <div class="checkout-card">
+
+                <h3>
+                    💳 Payment Information
+                </h3>
+
+
+                <!-- CASH ON DELIVERY -->
+
+                <label class="payment-option">
+
+                    <input
+                        type="radio"
+                        name="paymentMethod"
+                        value="Cash on Delivery"
+                        checked
+                        onchange="selectPayment('cod')"
+                    >
+
+                    <strong>
+                        Cash on Delivery
+                    </strong>
+
+                </label>
+
+
+                <div
+                    id="codDetails"
+                    class="payment-details active"
+                >
+
+                    <div class="payment-instruction">
+
+                        <strong>
+                            Cash on Delivery
+                        </strong>
+
+                        <br><br>
+
+                        পণ্য হাতে পাওয়ার পর টাকা পরিশোধ করুন।
+
+                    </div>
+
+                </div>
+
+
+                <!-- BKASH -->
+
+                <label class="payment-option">
+
+                    <input
+                        type="radio"
+                        name="paymentMethod"
+                        value="bKash"
+                        onchange="selectPayment('bkash')"
+                    >
+
+                    <strong>
+                        📱 bKash Personal
+                    </strong>
+
+                </label>
+
+
+                <div
+                    id="bkashDetails"
+                    class="payment-details"
+                >
+
+                    <div class="payment-instruction">
+
+                        <strong>
+                            bKash Personal Number
+                        </strong>
+
+
+                        <div class="payment-number">
+                            01611901506
+                        </div>
+
+
+                        <button
+                            type="button"
+                            class="copy-btn"
+                            onclick="copyPaymentNumber('01611901506')"
+                        >
+                            📋 নম্বর কপি করুন
+                        </button>
+
+
+                        <p>
+                            ১। আপনার bKash থেকে
+                            <strong>Send Money</strong>
+                            করুন।
+                        </p>
+
+
+                        <p>
+                            ২। উপরের নম্বরে টাকা পাঠান।
+                        </p>
+
+
+                        <p>
+                            ৩। টাকা পাঠানোর পর
+                            <strong>Transaction ID</strong>
+                            নিচের ঘরে লিখুন।
+                        </p>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            bKash Transaction ID *
+                        </label>
+
+
+                        <input
+                            type="text"
+                            id="bkashTransaction"
+                            placeholder="যেমন: 8A7B6C5D4E"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- NAGAD -->
+
+                <label class="payment-option">
+
+                    <input
+                        type="radio"
+                        name="paymentMethod"
+                        value="Nagad"
+                        onchange="selectPayment('nagad')"
+                    >
+
+                    <strong>
+                        📱 Nagad Personal
+                    </strong>
+
+                </label>
+
+
+                <div
+                    id="nagadDetails"
+                    class="payment-details"
+                >
+
+                    <div class="payment-instruction">
+
+                        <strong>
+                            Nagad Personal Number
+                        </strong>
+
+
+                        <div class="payment-number">
+                            01611901506
+                        </div>
+
+
+                        <button
+                            type="button"
+                            class="copy-btn"
+                            onclick="copyPaymentNumber('01611901506')"
+                        >
+                            📋 নম্বর কপি করুন
+                        </button>
+
+
+                        <p>
+                            ১। আপনার Nagad থেকে
+                            <strong>Send Money</strong>
+                            করুন।
+                        </p>
+
+
+                        <p>
+                            ২। উপরের নম্বরে টাকা পাঠান।
+                        </p>
+
+
+                        <p>
+                            ৩। টাকা পাঠানোর পর
+                            <strong>Transaction ID</strong>
+                            নিচের ঘরে লিখুন।
+                        </p>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Nagad Transaction ID *
+                        </label>
+
+
+                        <input
+                            type="text"
+                            id="nagadTransaction"
+                            placeholder="যেমন: 1234567890"
+                        >
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================= PAYMENT NOTICE ================= -->
+
+            <div class="checkout-card">
+
+                <div class="payment-instruction">
+
+                    🔒 <strong>Payment Verification</strong>
+
+                    <br><br>
+
+                    অনলাইন পেমেন্ট করলে অবশ্যই সঠিক
+                    <strong>Transaction ID</strong>
+                    প্রদান করুন।
+
+                    <br><br>
+
+                    Transaction ID যাচাই করার পর আপনার
+                    অর্ডারটি প্রসেস করা হবে।
+
+                    <br><br>
+
+                    ⚠️ ভুল Transaction ID দিলে অর্ডার
+                    যাচাই করতে সমস্যা হতে পারে।
+
+                </div>
+
+            </div>
+
+
+            <!-- ================= PLACE ORDER ================= -->
+
+            <button
+                class="place-order"
+                onclick="placeOrder()"
+            >
+                ✅ Place Order
+            </button>
+
+
+            <br><br>
+
+
+            <!-- ================= WHATSAPP ORDER ================= -->
+
+            <button
+                class="place-order"
+                style="background:#25D366;"
+                onclick="sendWhatsAppOrder()"
+            >
+                📱 WhatsApp-এ অর্ডার পাঠান
+            </button>
+
+        </div>
+
+    </div>
+    <script>
+
+    /* ================= SETTINGS ================= */
+
+    const WHATSAPP_NUMBER = "8801611901506";
+
+    const PAYMENT_NUMBER = "01611901506";
+
+
+    /* ================= CART ================= */
+
+    let cart = [];
+
+
+    /* ================= ADD TO CART ================= */
+
+    function addToCart(name, price) {
+
+        const existingProduct = cart.find(
+            item => item.name === name
+        );
+
+
+        if (existingProduct) {
+
+            existingProduct.quantity++;
+
+        } else {
+
+            cart.push({
+                name: name,
+                price: price,
+                quantity: 1
+            });
+
+        }
+
+
+        updateCart();
+
+        openCart();
+
+    }
+
+
+    /* ================= UPDATE CART ================= */
+
+    function updateCart() {
+
+        const cartItems =
+            document.getElementById("cartItems");
+
+        const cartCount =
+            document.getElementById("cartCount");
+
+        const cartTotal =
+            document.getElementById("cartTotal");
+
+
+        cartItems.innerHTML = "";
+
+
+        if (cart.length === 0) {
+
+            cartItems.innerHTML =
+                '<div class="empty-cart">আপনার কার্ট খালি।</div>';
+
+            cartCount.innerText = "0";
+
+            cartTotal.innerText = "0";
+
+            updateCheckoutSummary();
+
+            return;
+        }
+
+
+        let total = 0;
+
+        let count = 0;
+
+
+        cart.forEach((item, index) => {
+
+            const itemTotal =
+                item.price * item.quantity;
+
+
+            total += itemTotal;
+
+            count += item.quantity;
+
+
+            const div =
+                document.createElement("div");
+
+
+            div.className = "cart-item";
+
+
+            div.innerHTML = `
+
+                <div class="cart-item-title">
+                    ${item.name}
+                </div>
+
+
+                <div>
+                    ৳${item.price} × ${item.quantity}
+                </div>
+
+
+                <div class="qty">
+
+                    <button
+                        onclick="changeQuantity(${index}, -1)"
+                    >
+                        −
+                    </button>
+
+
+                    <strong>
+                        ${item.quantity}
+                    </strong>
+
+
+                    <button
+                        onclick="changeQuantity(${index}, 1)"
+                    >
+                        +
+                    </button>
+
+                </div>
+
+
+                <button
+                    class="remove-btn"
+                    onclick="removeFromCart(${index})"
+                >
+                    পণ্যটি বাদ দিন
+                </button>
+
+            `;
+
+
+            cartItems.appendChild(div);
+
+        });
+
+
+        cartCount.innerText = count;
+
+        cartTotal.innerText = total;
+
+
+        updateCheckoutSummary();
+
+    }
+
+
+    /* ================= CHANGE QUANTITY ================= */
+
+    function changeQuantity(index, amount) {
+
+        if (!cart[index]) {
+            return;
+        }
+
+
+        cart[index].quantity += amount;
+
+
+        if (cart[index].quantity <= 0) {
+
+            cart.splice(index, 1);
+
+        }
+
+
+        updateCart();
+
+    }
+
+
+    /* ================= REMOVE PRODUCT ================= */
+
+    function removeFromCart(index) {
+
+        if (!cart[index]) {
+            return;
+        }
+
+
+        cart.splice(index, 1);
+
+
+        updateCart();
+
+    }
+
+
+    /* ================= OPEN CART ================= */
+
+    function openCart() {
+
+        document
+            .getElementById("cartBox")
+            .classList.add("active");
+
+
+        document
+            .getElementById("overlay")
+            .classList.add("active");
+
+    }
+
+
+    /* ================= CLOSE CART ================= */
+
+    function closeCart() {
+
+        document
+            .getElementById("cartBox")
+            .classList.remove("active");
+
+
+        document
+            .getElementById("overlay")
+            .classList.remove("active");
+
+    }
+
+
+    /* ================= OPEN CHECKOUT ================= */
+
+    function openCheckout() {
+
+        if (cart.length === 0) {
+
+            alert(
+                "প্রথমে কমপক্ষে একটি পণ্য কার্টে যোগ করুন।"
+            );
+
+            return;
+        }
+
+
+        const checkout =
+            document.getElementById("checkoutSection");
+
+
+        checkout.style.display = "block";
+
+
+        updateCheckoutSummary();
+
+
+        checkout.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
+
+    }
+
+
+    /* ================= CHECKOUT SUMMARY ================= */
+
+    function updateCheckoutSummary() {
+
+        const summary =
+            document.getElementById("checkoutSummary");
+
+
+        const checkoutTotal =
+            document.getElementById("checkoutTotal");
+
+
+        if (!summary || !checkoutTotal) {
+            return;
+        }
+
+
+        summary.innerHTML = "";
+
+
+        let total = 0;
+
+
+        cart.forEach(item => {
+
+            const itemTotal =
+                item.price * item.quantity;
+
+
+            total += itemTotal;
+
+
+            const row =
+                document.createElement("div");
+
+
+            row.className = "summary-item";
+
+
+            row.innerHTML = `
+
+                <span>
+                    ${item.name} × ${item.quantity}
+                </span>
+
+
+                <strong>
+                    ৳${itemTotal}
+                </strong>
+
+            `;
+
+
+            summary.appendChild(row);
+
+        });
+
+
+        checkoutTotal.innerText = total;
+
+    }
+
+
+    /* ================= SEARCH ================= */
+
+    function searchProducts() {
+
+        const searchText =
+            document
+                .getElementById("search")
+                .value
+                .toLowerCase()
+                .trim();
+
+
+        const products =
+            document.querySelectorAll(".product");
+
+
+        products.forEach(product => {
+
+            const name =
+                product
+                    .getAttribute("data-name")
+                    .toLowerCase();
+
+
+            if (name.includes(searchText)) {
+
+                product.style.display = "";
+
+            } else {
+
+                product.style.display = "none";
+
+            }
+
+        });
+
+    }
+
+
+    /* ================= PAYMENT SELECT ================= */
+
+    function selectPayment(method) {
+
+        const cod =
+            document.getElementById("codDetails");
+
+        const bkash =
+            document.getElementById("bkashDetails");
+
+        const nagad =
+            document.getElementById("nagadDetails");
+
+
+        cod.classList.remove("active");
+
+        bkash.classList.remove("active");
+
+        nagad.classList.remove("active");
+
+
+        if (method === "cod") {
+
+            cod.classList.add("active");
+
+        }
+
+
+        if (method === "bkash") {
+
+            bkash.classList.add("active");
+
+        }
+
+
+        if (method === "nagad") {
+
+            nagad.classList.add("active");
+
+        }
+
+    }
+
+
+    /* ================= COPY PAYMENT NUMBER ================= */
+
+    function copyPaymentNumber(number) {
+
+        navigator.clipboard
+            .writeText(number)
+            .then(() => {
+
+                alert(
+                    "পেমেন্ট নম্বর কপি হয়েছে: " + number
+                );
+
+            })
+            .catch(() => {
+
+                alert(
+                    "নম্বরটি কপি করা যায়নি। নম্বরটি ম্যানুয়ালি কপি করুন: "
+                    + number
+                );
+
+            });
+
+    }
+
+
+    /* ================= GET TOTAL ================= */
+
+    function getCartTotal() {
+
+        return cart.reduce(
+            (total, item) =>
+                total + (item.price * item.quantity),
+            0
+        );
+
+    }
+
+
+    /* ================= GET PAYMENT METHOD ================= */
+
+    function getSelectedPayment() {
+
+        const selected =
+            document.querySelector(
+                'input[name="paymentMethod"]:checked'
+            );
+
+
+        if (!selected) {
+
+            return "Cash on Delivery";
+
+        }
+
+
+        return selected.value;
+
+    }
+
+
+    /* ================= PLACE ORDER ================= */
+
+    function placeOrder() {
+
+        if (cart.length === 0) {
+
+            alert(
+                "আপনার কার্ট খালি। প্রথমে পণ্য যোগ করুন।"
+            );
+
+            return;
+
+        }
+
+
+        const name =
+            document
+                .getElementById("customerName")
+                .value
+                .trim();
+
+
+        const phone =
+            document
+                .getElementById("customerPhone")
+                .value
+                .trim();
+
+
+        const address =
+            document
+                .getElementById("customerAddress")
+                .value
+                .trim();
+
+
+        const district =
+            document
+                .getElementById("district")
+                .value;
+
+
+        const thana =
+            document
+                .getElementById("thana")
+                .value
+                .trim();
+
+
+        const postcode =
+            document
+                .getElementById("postcode")
+                .value
+                .trim();
+
+
+        const payment =
+            getSelectedPayment();
+
+
+        if (!name) {
+
+            alert("আপনার নাম লিখুন।");
+
+            return;
+
+        }
+
+
+        if (!phone) {
+
+            alert("আপনার মোবাইল নম্বর লিখুন।");
+
+            return;
+
+        }
+
+
+        if (!address) {
+
+            alert("আপনার ঠিকানা লিখুন।");
+
+            return;
+
+        }
+
+
+        if (!district) {
+
+            alert("জেলা নির্বাচন করুন।");
+
+            return;
+
+        }
+
+
+        /* ================= PAYMENT VALIDATION ================= */
+
+        let transactionId = "";
+
+
+        if (payment === "bKash") {
+
+            transactionId =
+                document
+                    .getElementById("bkashTransaction")
+                    .value
+                    .trim();
+
+
+            if (!transactionId) {
+
+                alert(
+                    "bKash Transaction ID লিখুন।"
+                );
+
+                return;
+
+            }
+
+        }
+
+
+        if (payment === "Nagad") {
+
+            transactionId =
+                document
+                    .getElementById("nagadTransaction")
+                    .value
+                    .trim();
+
+
+            if (!transactionId) {
+
+                alert(
+                    "Nagad Transaction ID লিখুন।"
+                );
+
+                return;
+
+            }
+
+        }
+
+
+        /* ================= ORDER ID ================= */
+
+        const orderId =
+            "GG-" +
+            Date.now().toString().slice(-8);
+
+
+        /* ================= ORDER ITEMS ================= */
+
+        let itemText = "";
+
+
+        cart.forEach(item => {
+
+            itemText +=
+                "• " +
+                item.name +
+                " × " +
+                item.quantity +
+                " = ৳" +
+                (item.price * item.quantity) +
+                "\n";
+
+        });
+
+
+        const total =
+            getCartTotal();
+
+
+        /* ================= WHATSAPP MESSAGE ================= */
+
+        let message =
+
+            "🛍️ *Gaming Guru Shop - New Order*\n\n" +
+
+            "📋 *Order ID:* " +
+            orderId +
+            "\n\n" +
+
+            "🧾 *Products:*\n" +
+            itemText +
+            "\n" +
+
+            "💰 *Total:* ৳" +
+            total +
+            "\n\n" +
+
+            "👤 *Customer Information*\n" +
+
+            "Name: " +
+            name +
+            "\n" +
+
+            "Phone: " +
+            phone +
+            "\n" +
+
+            "Address: " +
+            address +
+            "\n" +
+
+            "District: " +
+            district +
+            "\n" +
+
+            "Thana/Upazila: " +
+            (thana || "N/A") +
+            "\n" +
+
+            "Postcode: " +
+            (postcode || "N/A") +
+            "\n\n" +
+
+            "💳 *Payment Method:* " +
+            payment +
+            "\n";
+
+
+        if (
+            payment === "bKash" ||
+            payment === "Nagad"
+        ) {
+
+            message +=
+
+                "🔖 *Transaction ID:* " +
+                transactionId +
+                "\n";
+
+        }
+
+
+        message +=
+
+            "\n✅ Please confirm my order.";
+
+
+        const whatsappURL =
+            "https://wa.me/" +
+            WHATSAPP_NUMBER +
+            "?text=" +
+            encodeURIComponent(message);
+
+
+        window.open(
+            whatsappURL,
+            "_blank"
+        );
+
+    }
+
+
+    /* ================= DIRECT WHATSAPP ================= */
+
+    function sendWhatsAppOrder() {
+
+        if (cart.length === 0) {
+
+            alert(
+                "প্রথমে পণ্য কার্টে যোগ করুন।"
+            );
+
+            return;
+
+        }
+
+
+        placeOrder();
+
+    }
+
+
+    /* ================= INITIAL CART ================= */
+
+    updateCart();
+
+                     </script>
+    </body>
+</html>
+                     
