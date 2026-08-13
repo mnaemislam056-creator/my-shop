@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Register - Gaming Guru Shop</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, "Noto Sans Bengali", sans-serif;
+      background: #f5f6f8;
+      color: #222;
+    }
+
+    .register-box {
+      width: 90%;
+      max-width: 420px;
+      margin: 40px auto;
+      background: white;
+      padding: 25px;
+      border-radius: 15px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.12);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin: 7px 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 15px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 12px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    #registerBtn {
+      background: #111;
+      color: white;
+    }
+
+    .login-link {
+      display: block;
+      text-align: center;
+      margin-top: 18px;
+      color: #2563eb;
+      text-decoration: none;
+    }
+
+    #message {
+      text-align: center;
+      margin-top: 15px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="register-box">
+
+    <h2>Create Account</h2>
+
+    <input
+      type="text"
+      id="name"
+      placeholder="আপনার নাম"
+    >
+
+    <input
+      type="email"
+      id="email"
+      placeholder="আপনার Email"
+    >
+
+    <input
+      type="tel"
+      id="phone"
+      placeholder="Phone Number"
+    >
+
+    <input
+      type="number"
+      id="age"
+      placeholder="আপনার বয়স"
+      min="1"
+      max="120"
+    >
+
+    <input
+      type="password"
+      id="password"
+      placeholder="Password"
+    >
+
+    <input
+      type="password"
+      id="confirmPassword"
+      placeholder="Confirm Password"
+    >
+
+    <button id="registerBtn">
+      Register
+    </button>
+
+    <div id="message"></div>
+
+    <a class="login-link" href="login.html">
+      Already have an account? Login
+    </a>
+
+  </div>
+
+
+  <script type="module">
+
+    import { initializeApp }
+      from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+    import {
+      getAuth,
+      createUserWithEmailAndPassword,
+      updateProfile
+    }
+      from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+    import {
+      getFirestore,
+      doc,
+      setDoc,
+      serverTimestamp
+    }
+      from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+
+    // =========================
+    // FIREBASE CONFIG
+    // =========================
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDHQ-d4S5LU5c7yvHPgQ0YgxZLcYa0evKI",
+      authDomain: "guru-stor-database.firebaseapp.com",
+      projectId: "guru-stor-database",
+      storageBucket: "guru-stor-database.firebasestorage.app",
+      messagingSenderId: "735673899170",
+      appId: "1:735673899170:web:abc4c60a8a7fef5b5fdffb",
+      measurementId: "G-C78SBC0X7C"
+    };
+
+
+    // Initialize Firebase
+
+    const app = initializeApp(firebaseConfig);
+
+    const auth = getAuth(app);
+
+    const db = getFirestore(app);
+
+
+    const message =
+      document.getElementById("message");
+
+
+    function showMessage(text) {
+      message.textContent = text;
+    }
+
+
+    // =========================
+    // REGISTER
+    // =========================
+
+    document
+      .getElementById("registerBtn")
+      .addEventListener("click", async () => {
+
+        const name =
+          document.getElementById("name").value.trim();
+
+        const email =
+          document.getElementById("email").value.trim();
+
+        const phone =
+          document.getElementById("phone").value.trim();
+
+        const age =
+          document.getElementById("age").value.trim();
+
+        const password =
+          document.getElementById("password").value;
+
+        const confirmPassword =
+          document.getElementById("confirmPassword").value;
+
+
+        // Check empty fields
+
+        if (
+          !name ||
+          !email ||
+          !phone ||
+          !age ||
+          !password ||
+          !confirmPassword
+        ) {
+
+          showMessage(
+            "সবগুলো ঘর পূরণ করুন।"
+          );
+
+          return;
+        }
+
+
+        // Check password length
+
+        if (password.length < 6) {
+
+          showMessage(
+            "Password কমপক্ষে 6 অক্ষরের হতে হবে।"
+          );
+
+          return;
+        }
+
+
+        // Check password match
+
+        if (password !== confirmPassword) {
+
+          showMessage(
+            "Password দুইটি একই নয়।"
+          );
+
+          return;
+        }
+
+
+        try {
+
+          showMessage(
+            "Account তৈরি হচ্ছে..."
+          );
+
+
+          // Create Firebase account
+
+          const userCredential =
+            await createUserWithEmailAndPassword(
+              auth,
+              email,
+              password
+            );
+
+
+          const user =
+            userCredential.user;
+
+
+          // Save display name
+
+          await updateProfile(user, {
+            displayName: name
+          });
+
+
+          // Save additional information
+
+          await setDoc(
+            doc(db, "users", user.uid),
+            {
+              name: name,
+              email: email,
+              phone: phone,
+              age: Number(age),
+              uid: user.uid,
+              createdAt: serverTimestamp()
+            }
+          );
+
+
+          showMessage(
+            "Registration successful!"
+          );
+
+
+          // Go to login page
+
+          setTimeout(() => {
+
+            window.location.href =
+              "login.html";
+
+          }, 1500);
+
+
+        } catch (error) {
+
+          console.error(error);
+
+          showMessage(
+            "Registration failed: " +
+            error.message
+          );
+
+        }
+
+      });
+
+  </script>
+
+</body>
+</html>
