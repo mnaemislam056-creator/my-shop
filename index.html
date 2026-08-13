@@ -284,6 +284,41 @@
             resize: none;
         }
 
+        /* ================= PAYMENT BOX ================= */
+
+        .online-payment {
+            display: none;
+            background: #f7f7f7;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 14px;
+            margin-bottom: 12px;
+        }
+
+        .online-payment.show {
+            display: block;
+        }
+
+        .payment-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .payment-number {
+            background: white;
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 7px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .payment-note {
+            font-size: 13px;
+            color: #666;
+            line-height: 1.6;
+        }
+
         .whatsapp {
             width: 100%;
             border: 0;
@@ -296,7 +331,7 @@
             cursor: pointer;
         }
 
-        /* ================= PAYMENT ================= */
+        /* ================= PAYMENT SECTION ================= */
 
         .payment {
             background: white;
@@ -308,6 +343,19 @@
 
         .payment p {
             line-height: 1.8;
+        }
+
+        .payment-method-box {
+            max-width: 600px;
+            margin: auto;
+            text-align: left;
+            background: #f8f8f8;
+            padding: 18px;
+            border-radius: 10px;
+        }
+
+        .payment-method-box p {
+            margin: 8px 0;
         }
 
         /* ================= CONTACT ================= */
@@ -409,7 +457,6 @@
 
         <div class="products" id="productList">
 
-
             <!-- PRODUCT 1 -->
 
             <div
@@ -418,10 +465,12 @@
             >
 
                 <div class="product-image">
+
                     <img
                         src="IMG_20260813_165650.jpg"
                         alt="SR Safety Helmet"
                     >
+
                 </div>
 
                 <div class="product-info">
@@ -572,17 +621,32 @@
         <div class="payment">
 
             <h2>
-                💳 পেমেন্ট
+                💳 পেমেন্ট ব্যবস্থা
             </h2>
 
-            <p>
-                বর্তমানে Cash on Delivery ব্যবহার করতে পারেন।
-            </p>
+            <div class="payment-method-box">
 
-            <p>
-                পরে এখানে bKash / Nagad / অন্যান্য payment
-                ব্যবস্থা যোগ করা যাবে।
-            </p>
+                <p>
+                    🟢 <strong>bKash Personal:</strong>
+                    01611901506
+                </p>
+
+                <p>
+                    🟠 <strong>Nagad Personal:</strong>
+                    01611901506
+                </p>
+
+                <p>
+                    📦 <strong>Cash on Delivery:</strong>
+                    পণ্য হাতে পেয়ে মূল্য পরিশোধ করুন।
+                </p>
+
+                <p>
+                    💡 bKash বা Nagad-এ <strong>Send Money</strong>
+                    করার পর অর্ডারের সময় Transaction ID প্রদান করুন।
+                </p>
+
+            </div>
 
         </div>
 
@@ -602,7 +666,7 @@
         </p>
 
         <p>
-            📱 ফোন: 01309302602
+            📱 WhatsApp: 01611901506
         </p>
 
         <p>
@@ -659,7 +723,7 @@
         </div>
 
 
-        <!-- ORDER FORM -->
+        <!-- ================= ORDER FORM ================= -->
 
         <div class="order-form">
 
@@ -676,30 +740,96 @@
             <input
                 type="tel"
                 id="customerPhone"
-                placeholder="মোবাইল নম্বর"
+                placeholder="আপনার মোবাইল নম্বর"
             >
 
             <textarea
                 id="customerAddress"
-                placeholder="সম্পূর্ণ ঠিকানা"
+                placeholder="সম্পূর্ণ ডেলিভারি ঠিকানা"
             ></textarea>
 
-            <select id="paymentMethod">
+
+            <!-- PAYMENT METHOD -->
+
+            <select
+                id="paymentMethod"
+                onchange="paymentMethodChanged()"
+            >
 
                 <option value="Cash on Delivery">
-                    Cash on Delivery
+                    📦 Cash on Delivery
                 </option>
 
                 <option value="bKash">
-                    bKash
+                    🟢 bKash Personal
                 </option>
 
                 <option value="Nagad">
-                    Nagad
+                    🟠 Nagad Personal
                 </option>
 
             </select>
 
+
+            <!-- ONLINE PAYMENT INFORMATION -->
+
+            <div
+                class="online-payment"
+                id="onlinePaymentBox"
+            >
+
+                <div
+                    class="payment-title"
+                    id="paymentTitle"
+                >
+                    🟢 bKash Personal Payment
+                </div>
+
+
+                <div
+                    class="payment-number"
+                    id="paymentNumber"
+                >
+                    01611901506
+                </div>
+
+
+                <div class="payment-note">
+
+                    উপরের নম্বরে <strong>Send Money</strong>
+                    করুন।
+
+                    <br><br>
+
+                    Send Money সম্পন্ন করার পর নিচের ঘরে
+                    আপনার Transaction ID দিন।
+
+                </div>
+
+            </div>
+
+
+            <!-- SENDER NUMBER -->
+
+            <input
+                type="tel"
+                id="senderNumber"
+                placeholder="যে নম্বর থেকে টাকা পাঠিয়েছেন"
+                style="display:none;"
+            >
+
+
+            <!-- TRANSACTION ID -->
+
+            <input
+                type="text"
+                id="transactionId"
+                placeholder="Transaction ID লিখুন"
+                style="display:none;"
+            >
+
+
+            <!-- WHATSAPP ORDER -->
 
             <button
                 class="whatsapp"
@@ -717,21 +847,34 @@
 
     <script>
 
+        /* =================================================
+           SHOP CONTACT INFORMATION
+        ================================================= */
+
         const WHATSAPP_NUMBER = "8801611901506";
 
+        const BKASH_NUMBER = "01611901506";
 
-        /* ================= CART ================= */
+        const NAGAD_NUMBER = "01611901506";
+
+
+        /* =================================================
+           CART
+        ================================================= */
 
         let cart = [];
 
 
-        /* ================= ADD TO CART ================= */
+        /* =================================================
+           ADD TO CART
+        ================================================= */
 
         function addToCart(name, price) {
 
             const existingProduct = cart.find(
                 item => item.name === name
             );
+
 
             if (existingProduct) {
 
@@ -747,6 +890,7 @@
 
             }
 
+
             updateCart();
 
             openCart();
@@ -754,7 +898,9 @@
         }
 
 
-        /* ================= UPDATE CART ================= */
+        /* =================================================
+           UPDATE CART
+        ================================================= */
 
         function updateCart() {
 
@@ -795,6 +941,7 @@
                 const itemTotal =
                     item.price * item.quantity;
 
+
                 total += itemTotal;
 
                 count += item.quantity;
@@ -802,6 +949,7 @@
 
                 const div =
                     document.createElement("div");
+
 
                 div.className = "cart-item";
 
@@ -858,7 +1006,9 @@
         }
 
 
-        /* ================= CHANGE QUANTITY ================= */
+        /* =================================================
+           CHANGE QUANTITY
+        ================================================= */
 
         function changeQuantity(index, amount) {
 
@@ -877,7 +1027,9 @@
         }
 
 
-        /* ================= REMOVE PRODUCT ================= */
+        /* =================================================
+           REMOVE PRODUCT
+        ================================================= */
 
         function removeFromCart(index) {
 
@@ -888,7 +1040,9 @@
         }
 
 
-        /* ================= OPEN CART ================= */
+        /* =================================================
+           OPEN CART
+        ================================================= */
 
         function openCart() {
 
@@ -899,7 +1053,9 @@
         }
 
 
-        /* ================= CLOSE CART ================= */
+        /* =================================================
+           CLOSE CART
+        ================================================= */
 
         function closeCart() {
 
@@ -910,7 +1066,9 @@
         }
 
 
-        /* ================= SEARCH ================= */
+        /* =================================================
+           SEARCH PRODUCTS
+        ================================================= */
 
         function searchProducts() {
 
@@ -948,13 +1106,94 @@
         }
 
 
-        /* ================= WHATSAPP ORDER ================= */
+        /* =================================================
+           PAYMENT METHOD CHANGE
+        ================================================= */
+
+        function paymentMethodChanged() {
+
+            const paymentMethod =
+                document.getElementById("paymentMethod").value;
+
+
+            const onlinePaymentBox =
+                document.getElementById("onlinePaymentBox");
+
+
+            const paymentTitle =
+                document.getElementById("paymentTitle");
+
+
+            const paymentNumber =
+                document.getElementById("paymentNumber");
+
+
+            const senderNumber =
+                document.getElementById("senderNumber");
+
+
+            const transactionId =
+                document.getElementById("transactionId");
+
+
+            if (paymentMethod === "bKash") {
+
+                onlinePaymentBox.classList.add("show");
+
+                paymentTitle.innerText =
+                    "🟢 bKash Personal Payment";
+
+                paymentNumber.innerText =
+                    BKASH_NUMBER;
+
+                senderNumber.style.display = "block";
+
+                transactionId.style.display = "block";
+
+            }
+
+            else if (paymentMethod === "Nagad") {
+
+                onlinePaymentBox.classList.add("show");
+
+                paymentTitle.innerText =
+                    "🟠 Nagad Personal Payment";
+
+                paymentNumber.innerText =
+                    NAGAD_NUMBER;
+
+                senderNumber.style.display = "block";
+
+                transactionId.style.display = "block";
+
+            }
+
+            else {
+
+                onlinePaymentBox.classList.remove("show");
+
+                senderNumber.style.display = "none";
+
+                transactionId.style.display = "none";
+
+                senderNumber.value = "";
+
+                transactionId.value = "";
+
+            }
+
+        }
+
+
+        /* =================================================
+           SEND WHATSAPP ORDER
+        ================================================= */
 
         function sendWhatsAppOrder() {
 
             if (cart.length === 0) {
 
-                alert("আপনার কার্ট খালি।");
+                alert("আপনার কার্টে কোনো পণ্য নেই।");
 
                 return;
 
@@ -988,9 +1227,25 @@
                     .value;
 
 
+            const senderNumber =
+                document
+                    .getElementById("senderNumber")
+                    .value
+                    .trim();
+
+
+            const transactionId =
+                document
+                    .getElementById("transactionId")
+                    .value
+                    .trim();
+
+
+            /* ================= VALIDATION ================= */
+
             if (!customerName) {
 
-                alert("দয়া করে আপনার নাম লিখুন।");
+                alert("দয়া করে আপনার নাম লিখুন।");
 
                 return;
 
@@ -999,7 +1254,7 @@
 
             if (!customerPhone) {
 
-                alert("দয়া করে মোবাইল নম্বর লিখুন।");
+                alert("দয়া করে আপনার মোবাইল নম্বর লিখুন।");
 
                 return;
 
@@ -1008,34 +1263,71 @@
 
             if (!customerAddress) {
 
-                alert("দয়া করে সম্পূর্ণ ঠিকানা লিখুন।");
+                alert("দয়া করে সম্পূর্ণ ডেলিভারি ঠিকানা লিখুন।");
 
                 return;
 
             }
 
 
+            if (
+                paymentMethod === "bKash" ||
+                paymentMethod === "Nagad"
+            ) {
+
+                if (!senderNumber) {
+
+                    alert(
+                        "যে নম্বর থেকে টাকা পাঠিয়েছেন সেটি লিখুন।"
+                    );
+
+                    return;
+
+                }
+
+
+                if (!transactionId) {
+
+                    alert(
+                        "দয়া করে Transaction ID লিখুন।"
+                    );
+
+                    return;
+
+                }
+
+            }
+
+
+            /* ================= ORDER MESSAGE ================= */
+
+            let message =
+                "🛍️ *Gaming Guru Shop - নতুন অর্ডার*%0A%0A";
+
+
+            message +=
+                "👤 *নাম:* " +
+                encodeURIComponent(customerName) +
+                "%0A";
+
+
+            message +=
+                "📱 *মোবাইল:* " +
+                encodeURIComponent(customerPhone) +
+                "%0A";
+
+
+            message +=
+                "📍 *ঠিকানা:* " +
+                encodeURIComponent(customerAddress) +
+                "%0A%0A";
+
+
+            message +=
+                "🛒 *অর্ডারের পণ্য:*%0A";
+
+
             let total = 0;
-
-            let orderText =
-                "🛒 নতুন অর্ডার\n\n";
-
-
-            orderText +=
-                "👤 নাম: " + customerName + "\n";
-
-            orderText +=
-                "📱 ফোন: " + customerPhone + "\n";
-
-            orderText +=
-                "📍 ঠিকানা: " + customerAddress + "\n";
-
-            orderText +=
-                "💳 পেমেন্ট: " + paymentMethod + "\n\n";
-
-
-            orderText +=
-                "📦 পণ্যসমূহ:\n";
 
 
             cart.forEach((item, index) => {
@@ -1043,33 +1335,78 @@
                 const itemTotal =
                     item.price * item.quantity;
 
+
                 total += itemTotal;
 
 
-                orderText +=
+                message +=
                     (index + 1) +
                     ". " +
-                    item.name +
-                    " - ৳" +
-                    item.price +
+                    encodeURIComponent(item.name) +
                     " × " +
                     item.quantity +
                     " = ৳" +
                     itemTotal +
-                    "\n";
+                    "%0A";
 
             });
 
 
-            orderText +=
-                "\n💰 মোট: ৳" + total;
+            message +=
+                "%0A💰 *মোট মূল্য:* ৳" +
+                total +
+                "%0A";
 
+
+            message +=
+                "💳 *পেমেন্ট পদ্ধতি:* " +
+                encodeURIComponent(paymentMethod) +
+                "%0A";
+
+
+            /* ================= ONLINE PAYMENT ================= */
+
+            if (paymentMethod === "bKash") {
+
+                message +=
+                    "📲 *পাঠানো নম্বর:* " +
+                    encodeURIComponent(senderNumber) +
+                    "%0A";
+
+                message +=
+                    "🧾 *Transaction ID:* " +
+                    encodeURIComponent(transactionId) +
+                    "%0A";
+
+            }
+
+
+            if (paymentMethod === "Nagad") {
+
+                message +=
+                    "📲 *পাঠানো নম্বর:* " +
+                    encodeURIComponent(senderNumber) +
+                    "%0A";
+
+                message +=
+                    "🧾 *Transaction ID:* " +
+                    encodeURIComponent(transactionId) +
+                    "%0A";
+
+            }
+
+
+            message +=
+                "%0A🙏 ধন্যবাদ, Gaming Guru Shop";
+
+
+            /* ================= OPEN WHATSAPP ================= */
 
             const whatsappURL =
                 "https://wa.me/" +
                 WHATSAPP_NUMBER +
                 "?text=" +
-                encodeURIComponent(orderText);
+                message;
 
 
             window.open(
@@ -1080,7 +1417,9 @@
         }
 
 
-        /* ================= INITIAL CART ================= */
+        /* =================================================
+           INITIAL CART
+        ================================================= */
 
         updateCart();
 
