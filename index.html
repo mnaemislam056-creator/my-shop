@@ -1897,7 +1897,7 @@
 
     /* ================= PLACE ORDER ================= */
 
-    function placeOrder() {
+    async function placeOrder() {
 
         if (cart.length === 0) {
 
@@ -2136,6 +2136,52 @@
         message +=
 
             "\n✅ Please confirm my order.";
+                /* ================= SAVE ORDER TO FIREBASE ================= */
+
+        try {
+
+            await window.firebaseAddDoc(
+                window.firebaseCollection(
+                    window.firebaseDB,
+                    "orders"
+                ),
+                {
+                    orderId: orderId,
+                    customerName: name,
+                    phone: phone,
+                    address: address,
+                    district: district,
+                    thana: thana || "N/A",
+                    postcode: postcode || "N/A",
+                    paymentMethod: payment,
+                    transactionId:
+                        (payment === "bKash" || payment === "Nagad")
+                            ? transactionId
+                            : "",
+                    items: cart.map(item => ({
+                        name: item.name,
+                        price: item.price,
+                        quantity: item.quantity
+                    })),
+                    total: total,
+                    status: "Pending",
+                    createdAt: new Date().toISOString()
+                }
+            );
+
+        } catch (error) {
+
+            console.error(
+                "Firebase order save error:",
+                error
+            );
+
+            alert(
+                "অর্ডার সংরক্ষণ করা যায়নি। আবার চেষ্টা করুন।"
+            );
+
+            return;
+        }
 
 
         const whatsappURL =
@@ -2181,7 +2227,11 @@
     <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
   import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
+import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        import {
+  collection,
+  addDoc
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
   const firebaseConfig = {
     apiKey: "AIzaSyDHQ-d4S5LU5c7yvHPgQ0YgxZLcYa0evKI",
     authDomain: "guru-stor-database.firebaseapp.com",
@@ -2196,6 +2246,8 @@
   const db = getFirestore(app);
 
   window.firebaseDB = db;
+   window.firebaseCollection = collection;
+window.firebaseAddDoc = addDoc; 
     </script> 
     
     </body>
