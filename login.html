@@ -91,7 +91,7 @@
     }
 
   </style>
-</head>
+  </head>
 
 <body>
 
@@ -183,7 +183,6 @@
     const auth =
       getAuth(app);
 
-
     const message =
       document.getElementById("message");
 
@@ -192,6 +191,8 @@
       message.textContent = text;
     }
 
+
+    // EMAIL LOGIN
 
     document
       .getElementById("emailLogin")
@@ -231,17 +232,9 @@
           );
 
 
-          showMessage(
-            "Congratulations! Login successful."
+          window.location.replace(
+            "./index.html"
           );
-
-
-          setTimeout(() => {
-
-            window.location.href =
-              "index.html";
-
-          }, 1000);
 
 
         } catch (error) {
@@ -257,6 +250,8 @@
 
       });
 
+
+    // GOOGLE LOGIN
 
     const googleProvider =
       new GoogleAuthProvider();
@@ -279,17 +274,9 @@
           );
 
 
-          showMessage(
-            "Congratulations! Google Login successful."
+          window.location.replace(
+            "./index.html"
           );
-
-
-          setTimeout(() => {
-
-            window.location.href =
-              "index.html";
-
-          }, 1000);
 
 
         } catch (error) {
