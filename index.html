@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>আমার দোকান</title>
+    <title>Gaming Guru Shop</title>
 
     <style>
         * {
@@ -362,7 +362,7 @@
     <header>
 
         <div class="logo">
-            Safety Zone 
+            Gaming Guru Shop
         </div>
 
         <button class="cart-btn" onclick="openCart()">
@@ -377,7 +377,7 @@
     <section class="hero">
 
         <h1>
-            আমাদের অনলাইন শপে স্বাগতম
+            Gaming Guru Shop-এ স্বাগতম
         </h1>
 
         <p>
@@ -418,26 +418,29 @@
             >
 
                 <div class="product-image">
-                    <img src="images/sr-safety-helmet.jpg" alt="SR Safety Helmet">
+                    <img
+                        src="IMG_20260813_165650.jpg"
+                        alt="SR Safety Helmet"
+                    >
                 </div>
 
                 <div class="product-info">
 
                     <h3>
-                        Sample Product
+                        SR Safety Helmet
                     </h3>
 
                     <p>
-                        এটি আমাদের প্রথম নমুনা পণ্য।
+                        Industrial Safety Helmet.
                     </p>
 
                     <div class="price">
-                        ৳500
+                        ৳150
                     </div>
 
                     <button
                         class="order-button"
-                        onclick="addToCart('Sample Product', 500)"
+                        onclick="addToCart('SR Safety Helmet', 150)"
                     >
                         🛒 কার্টে যোগ করুন
                     </button>
@@ -603,7 +606,7 @@
         </p>
 
         <p>
-            📍 ঠিকানা: ঢাকা, নবাবপুর 
+            📍 ঠিকানা: ঢাকা, নবাবপুর
         </p>
 
     </section>
@@ -614,7 +617,7 @@
     <footer>
 
         <h3>
-            GAMING Guru Shop 
+            Gaming Guru Shop
         </h3>
 
         <p>
@@ -622,7 +625,7 @@
         </p>
 
         <p>
-            © 2026 আমার দোকান
+            © 2026 Gaming Guru Shop
         </p>
 
     </footer>
@@ -714,25 +717,10 @@
 
     <script>
 
-        /*
-         * ==========================================
-         * IMPORTANT
-         * ==========================================
-         *
-         * এখানে পরে দোকানের WhatsApp নম্বর বসাতে হবে।
-         *
-         * উদাহরণ:
-         *
-         * const WHATSAPP_NUMBER = "8801712345678";
-         *
-         * বাংলাদেশি নম্বরের আগে 88 দিতে হবে।
-         *
-         */
-
         const WHATSAPP_NUMBER = "8801XXXXXXXXX";
 
 
-        /* Cart */
+        /* ================= CART ================= */
 
         let cart = [];
 
@@ -770,11 +758,14 @@
 
         function updateCart() {
 
-            const cartItems = document.getElementById("cartItems");
+            const cartItems =
+                document.getElementById("cartItems");
 
-            const cartCount = document.getElementById("cartCount");
+            const cartCount =
+                document.getElementById("cartCount");
 
-            const cartTotal = document.getElementById("cartTotal");
+            const cartTotal =
+                document.getElementById("cartTotal");
 
 
             cartItems.innerHTML = "";
@@ -809,7 +800,8 @@
                 count += item.quantity;
 
 
-                const div = document.createElement("div");
+                const div =
+                    document.createElement("div");
 
                 div.className = "cart-item";
 
@@ -962,100 +954,91 @@
 
             if (cart.length === 0) {
 
-                alert("প্রথমে অন্তত একটি পণ্য কার্টে যোগ করুন।");
+                alert("আপনার কার্ট খালি।");
 
                 return;
 
             }
 
 
-            const name =
+            const customerName =
                 document
                     .getElementById("customerName")
                     .value
                     .trim();
 
 
-            const phone =
+            const customerPhone =
                 document
                     .getElementById("customerPhone")
                     .value
                     .trim();
 
 
-            const address =
+            const customerAddress =
                 document
                     .getElementById("customerAddress")
                     .value
                     .trim();
 
 
-            const payment =
+            const paymentMethod =
                 document
                     .getElementById("paymentMethod")
                     .value;
 
 
-            if (!name || !phone || !address) {
+            if (!customerName) {
 
-                alert(
-                    "অনুগ্রহ করে নাম, মোবাইল নম্বর এবং ঠিকানা পূরণ করুন।"
-                );
+                alert("দয়া করে আপনার নাম লিখুন।");
 
                 return;
 
             }
 
 
-            if (
-                WHATSAPP_NUMBER === "+8801611901506"
-            ) {
+            if (!customerPhone) {
 
-                alert(
-                    "প্রথমে কোডের WHATSAPP_NUMBER-এ আপনার দোকানের WhatsApp নম্বর বসাতে হবে।"
-                );
+                alert("দয়া করে মোবাইল নম্বর লিখুন।");
 
                 return;
 
             }
 
 
-            let message =
-                "🛍️ *নতুন অর্ডার*%0A%0A";
+            if (!customerAddress) {
 
+                alert("দয়া করে সম্পূর্ণ ঠিকানা লিখুন।");
 
-            message +=
-                "👤 নাম: " +
-                encodeURIComponent(name) +
-                "%0A";
+                return;
 
-
-            message +=
-                "📱 ফোন: " +
-                encodeURIComponent(phone) +
-                "%0A";
-
-
-            message +=
-                "📍 ঠিকানা: " +
-                encodeURIComponent(address) +
-                "%0A";
-
-
-            message +=
-                "💳 পেমেন্ট: " +
-                encodeURIComponent(payment) +
-                "%0A%0A";
-
-
-            message +=
-                "📦 *পণ্যের তালিকা:*%0A";
+            }
 
 
             let total = 0;
 
+            let orderText =
+                "🛒 নতুন অর্ডার\n\n";
 
-            cart.forEach(item => {
+
+            orderText +=
+                "👤 নাম: " + customerName + "\n";
+
+            orderText +=
+                "📱 ফোন: " + customerPhone + "\n";
+
+            orderText +=
+                "📍 ঠিকানা: " + customerAddress + "\n";
+
+            orderText +=
+                "💳 পেমেন্ট: " + paymentMethod + "\n\n";
+
+
+            orderText +=
+                "📦 পণ্যসমূহ:\n";
+
+
+            cart.forEach((item, index) => {
 
                 const itemTotal =
                     item.price * item.quantity;
@@ -1063,29 +1046,30 @@
                 total += itemTotal;
 
 
-                message +=
-                    "• " +
-                    encodeURIComponent(item.name) +
+                orderText +=
+                    (index + 1) +
+                    ". " +
+                    item.name +
+                    " - ৳" +
+                    item.price +
                     " × " +
                     item.quantity +
                     " = ৳" +
                     itemTotal +
-                    "%0A";
+                    "\n";
 
             });
 
 
-            message +=
-                "%0A💰 *মোট: ৳" +
-                total +
-                "*";
+            orderText +=
+                "\n💰 মোট: ৳" + total;
 
 
             const whatsappURL =
                 "https://wa.me/" +
                 WHATSAPP_NUMBER +
                 "?text=" +
-                message;
+                encodeURIComponent(orderText);
 
 
             window.open(
@@ -1096,13 +1080,11 @@
         }
 
 
-        /* Initial Cart */
+        /* ================= INITIAL CART ================= */
 
         updateCart();
 
     </script>
 
 </body>
-</html>     </p>
-
-    
+</html>
