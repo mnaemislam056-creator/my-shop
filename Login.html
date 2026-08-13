@@ -1,36 +1,455 @@
-
 <!DOCTYPE html>
 <html lang="bn">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login - My Shop</title>
-  <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
-  import {
-    getAuth,
-    GoogleAuthProvider,
-    signInWithPopup
-  } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
-  </script>
+
+  <title>Login - Gaming Guru Shop</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, "Noto Sans Bengali", sans-serif;
+      background: #f5f6f8;
+      color: #222;
+    }
+
+    .login-box {
+      width: 90%;
+      max-width: 400px;
+      margin: 60px auto;
+      background: white;
+      padding: 25px;
+      border-radius: 15px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.12);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin: 7px 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 15px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 15px;
+    }
+
+    #emailLogin {
+      background: #111;
+      color: white;
+    }
+
+    #register {
+      background: #eee;
+      color: #111;
+    }
+
+    #googleLogin {
+      background: #4285f4;
+      color: white;
+    }
+
+    #phoneLogin {
+      background: #16a34a;
+      color: white;
+    }
+
+    #sendCode {
+      background: #f59e0b;
+      color: white;
+    }
+
+    #message {
+      text-align: center;
+      margin-top: 15px;
+      font-size: 14px;
+    }
+
+    .divider {
+      text-align: center;
+      margin: 20px 0;
+      color: #777;
+    }
+
+    #recaptcha-container {
+      margin-top: 10px;
+    }
+  </style>
 </head>
 
 <body>
 
-  <h2>Login / Register</h2>
+  <div class="login-box">
 
-  <button id="googleLogin">Sign in with Google</button>
+    <h2>Login / Register</h2>
 
-  <br><br>
+    <!-- Email -->
+    <input
+      type="email"
+      id="email"
+      placeholder="আপনার Email"
+    >
 
-  <input type="email" id="email" placeholder="Email">
-  <br><br>
+    <input
+      type="password"
+      id="password"
+      placeholder="Password"
+    >
 
-  <input type="password" id="password" placeholder="Password">
-  <br><br>
+    <button id="emailLogin">
+      Login
+    </button>
 
-  <button id="emailLogin">Login</button>
-  <button id="register">Register</button>
+    <button id="register">
+      Register
+    </button>
+
+    <div class="divider">
+      অথবা
+    </div>
+
+    <!-- Google -->
+    <button id="googleLogin">
+      Sign in with Google
+    </button>
+
+    <div class="divider">
+      অথবা Phone Number
+    </div>
+
+    <!-- Phone -->
+    <input
+      type="tel"
+      id="phoneNumber"
+      placeholder="+8801XXXXXXXXX"
+    >
+
+    <div id="recaptcha-container"></div>
+
+    <button id="sendCode">
+      Send Verification Code
+    </button>
+
+    <input
+      type="text"
+      id="verificationCode"
+      placeholder="Verification Code"
+    >
+
+    <button id="phoneLogin">
+      Verify & Login
+    </button>
+
+    <div id="message"></div>
+
+  </div>
+
+
+  <script type="module">
+
+    import { initializeApp }
+      from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+    import {
+      getAuth,
+      GoogleAuthProvider,
+      signInWithPopup,
+      signInWithEmailAndPassword,
+      createUserWithEmailAndPassword,
+      RecaptchaVerifier,
+      signInWithPhoneNumber
+    }
+      from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+
+    // Firebase Configuration
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDHQ-d4S5LU5c7yvHPgQ0YgxZLcYa0evKI",
+      authDomain: "guru-stor-database.firebaseapp.com",
+      projectId: "guru-stor-database",
+      storageBucket: "guru-stor-database.firebasestorage.app",
+      messagingSenderId: "735673899170",
+      appId: "1:735673899170:web:abc4c60a8a7fef5b5fdffb",
+      measurementId: "G-C78SBC0X7C"
+    };
+
+
+    // Initialize Firebase
+
+    const app = initializeApp(firebaseConfig);
+
+    const auth = getAuth(app);
+
+
+    // Message
+
+    const message = document.getElementById("message");
+
+    function showMessage(text) {
+      message.textContent = text;
+    }
+
+
+    // =========================
+    // EMAIL LOGIN
+    // =========================
+
+    document
+      .getElementById("emailLogin")
+      .addEventListener("click", async () => {
+
+        const email =
+          document.getElementById("email").value.trim();
+
+        const password =
+          document.getElementById("password").value;
+
+        if (!email || !password) {
+          showMessage("Email এবং Password দিন।");
+          return;
+        }
+
+        try {
+
+          const userCredential =
+            await signInWithEmailAndPassword(
+              auth,
+              email,
+              password
+            );
+
+          showMessage(
+            "Login successful! Welcome " +
+            (userCredential.user.email || "")
+          );
+
+        } catch (error) {
+
+          showMessage(
+            "Login failed: " + error.message
+          );
+
+        }
+
+      });
+
+
+    // =========================
+    // EMAIL REGISTER
+    // =========================
+
+    document
+      .getElementById("register")
+      .addEventListener("click", async () => {
+
+        const email =
+          document.getElementById("email").value.trim();
+
+        const password =
+          document.getElementById("password").value;
+
+        if (!email || !password) {
+          showMessage("Email এবং Password দিন।");
+          return;
+        }
+
+        if (password.length < 6) {
+          showMessage(
+            "Password কমপক্ষে 6 অক্ষরের হতে হবে।"
+          );
+          return;
+        }
+
+        try {
+
+          const userCredential =
+            await createUserWithEmailAndPassword(
+              auth,
+              email,
+              password
+            );
+
+          showMessage(
+            "Registration successful! " +
+            userCredential.user.email
+          );
+
+        } catch (error) {
+
+          showMessage(
+            "Registration failed: " +
+            error.message
+          );
+
+        }
+
+      });
+
+
+    // =========================
+    // GOOGLE LOGIN
+    // =========================
+
+    const googleProvider =
+      new GoogleAuthProvider();
+
+    document
+      .getElementById("googleLogin")
+      .addEventListener("click", async () => {
+
+        try {
+
+          const result =
+            await signInWithPopup(
+              auth,
+              googleProvider
+            );
+
+          const user = result.user;
+
+          showMessage(
+            "Google Login successful! Welcome " +
+            (user.displayName || user.email)
+          );
+
+        } catch (error) {
+
+          showMessage(
+            "Google Login failed: " +
+            error.message
+          );
+
+        }
+
+      });
+
+
+    // =========================
+    // PHONE LOGIN
+    // =========================
+
+    let confirmationResult = null;
+
+
+    window.recaptchaVerifier =
+      new RecaptchaVerifier(
+        auth,
+        "recaptcha-container",
+        {
+          size: "normal"
+        }
+      );
+
+
+    // Send verification code
+
+    document
+      .getElementById("sendCode")
+      .addEventListener("click", async () => {
+
+        const phoneNumber =
+          document
+            .getElementById("phoneNumber")
+            .value.trim();
+
+        if (!phoneNumber) {
+          showMessage(
+            "Phone number দিন। যেমন: +8801XXXXXXXXX"
+          );
+          return;
+        }
+
+        try {
+
+          confirmationResult =
+            await signInWithPhoneNumber(
+              auth,
+              phoneNumber,
+              window.recaptchaVerifier
+            );
+
+          showMessage(
+            "Verification code পাঠানো হয়েছে।"
+          );
+
+        } catch (error) {
+
+          showMessage(
+            "Code পাঠানো যায়নি: " +
+            error.message
+          );
+
+        }
+
+      });
+
+
+    // Verify phone code
+
+    document
+      .getElementById("phoneLogin")
+      .addEventListener("click", async () => {
+
+        const code =
+          document
+            .getElementById("verificationCode")
+            .value.trim();
+
+        if (!confirmationResult) {
+          showMessage(
+            "আগে Send Verification Code চাপুন।"
+          );
+          return;
+        }
+
+        if (!code) {
+          showMessage(
+            "Verification Code দিন।"
+          );
+          return;
+        }
+
+        try {
+
+          const result =
+            await confirmationResult.confirm(code);
+
+          showMessage(
+            "Phone Login successful! " +
+            result.user.phoneNumber
+          );
+
+        } catch (error) {
+
+          showMessage(
+            "Verification failed: " +
+            error.message
+          );
+
+        }
+
+      });
+
+  </script>
 
 </body>
 </html>
