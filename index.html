@@ -1,115 +1,912 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Gaming Guru Shop</title>
+    <title>Gaming Guru Shop</title>
 
-<style>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
 
-*{
-    box-sizing:border-box;
-}
+        html {
+            scroll-behavior: smooth;
+        }
 
-html{
-    scroll-behavior:smooth;
-}
+        body {
+            margin: 0;
+            font-family: Arial, "Noto Sans Bengali", sans-serif;
+            background: #f5f6f8;
+            color: #222;
+        }
 
-body{
-    margin:0;
-    font-family:Arial,"Noto Sans Bengali",sans-serif;
-    background:#f5f6f8;
-    color:#222;
-}
+        /* ================= HEADER ================= */
 
-/* ================= HEADER ================= */
+        header {
+            background: #111;
+            color: white;
+            padding: 15px 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
 
-header{
-    background:#111;
-    color:white;
-    padding:14px 18px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    position:sticky;
-    top:0;
-    z-index:1000;
-}
+        .logo {
+            font-size: 23px;
+            font-weight: bold;
+        }
 
-.logo{
-    font-size:22px;
-    font-weight:bold;
-}
+        .cart-btn {
+            border: 0;
+            background: white;
+            color: #111;
+            padding: 9px 14px;
+            border-radius: 22px;
+            font-size: 14px;
+            cursor: pointer;
+        }
 
-.cart-btn{
-    border:0;
-    background:white;
-    color:#111;
-    padding:9px 14px;
-    border-radius:22px;
-    font-size:14px;
-    cursor:pointer;
-}
+        /* ================= HERO ================= */
 
-/* ================= HERO ================= */
+        .hero {
+            background: white;
+            text-align: center;
+            padding: 60px 20px;
+        }
 
-.hero{
-    background:white;
-    text-align:center;
-    padding:55px 20px;
-}
+        .hero h1 {
+            font-size: 35px;
+            margin: 0 0 15px;
+        }
 
-.hero h1{
-    font-size:35px;
-    margin:0 0 12px;
-}
+        .hero p {
+            color: #666;
+            font-size: 18px;
+        }
 
-.hero p{
-    color:#666;
-    font-size:17px;
-}
+        .shop-button {
+            display: inline-block;
+            margin-top: 15px;
+            background: #111;
+            color: white;
+            padding: 13px 25px;
+            border-radius: 8px;
+            text-decoration: none;
+        }
 
-.shop-button{
-    display:inline-block;
-    margin-top:15px;
-    background:#111;
-    color:white;
-    padding:13px 25px;
-    border-radius:8px;
-    text-decoration:none;
-}
+        /* ================= SECTION ================= */
 
-/* ================= SECTION ================= */
+        .section {
+            max-width: 1100px;
+            margin: auto;
+            padding: 35px 18px;
+        }
 
-.section{
-    max-width:1100px;
-    margin:auto;
-    padding:35px 18px;
-}
+        .section-title {
+            text-align: center;
+            margin-bottom: 20px;
+        }
 
-.section-title{
-    text-align:center;
-    margin-bottom:20px;
-}
+        /* ================= SEARCH ================= */
 
-/* ================= SEARCH ================= */
+        .search {
+            width: 100%;
+            max-width: 550px;
+            display: block;
+            margin: 0 auto 25px;
+            padding: 14px 16px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            outline: none;
+        }
 
-.search{
-    width:100%;
-    max-width:550px;
-    display:block;
-    margin:0 auto 25px;
-    padding:14px 16px;
-    border:1px solid #ddd;
-    border-radius:10px;
-    font-size:16px;
-    outline:none;
-}
+        .search:focus {
+            border-color: #111;
+        }
 
-.search:focus{
-    border-color:#111;
-}
+        /* ================= PRODUCTS ================= */
+
+        .products {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+        .product {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .product-image {
+            height: 190px;
+            background: #e9e9e9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #777;
+            font-size: 16px;
+            overflow: hidden;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .product-info {
+            padding: 16px;
+        }
+
+        .product h3 {
+            margin: 0 0 8px;
+            font-size: 20px;
+        }
+
+        .product p {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .price {
+            font-size: 21px;
+            font-weight: bold;
+            margin: 12px 0;
+        }
+
+        .order-button {
+            width: 100%;
+            border: 0;
+            background: #111;
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .order-button:active {
+            transform: scale(0.98);
+        }
+
+        /* ================= CART ================= */
+
+        .cart-box {
+            position: fixed;
+            right: -100%;
+            top: 0;
+            width: 90%;
+            max-width: 430px;
+            height: 100%;
+            background: white;
+            z-index: 2000;
+            box-shadow: -5px 0 20px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            overflow-y: auto;
+            transition: 0.3s;
+        }
+
+        .cart-box.active {
+            right: 0;
+        }
+
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 12px;
+        }
+
+        .close-btn {
+            border: 0;
+            background: #eee;
+            padding: 7px 11px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .cart-item {
+            border-bottom: 1px solid #eee;
+            padding: 15px 0;
+        }
+
+        .cart-item-title {
+            font-weight: bold;
+            margin-bottom: 7px;
+        }
+
+        .qty {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 8px;
+        }
+
+        .qty button {
+            border: 0;
+            background: #111;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .remove-btn {
+            margin-top: 8px;
+            border: 0;
+            background: #eee;
+            padding: 6px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .total {
+            font-size: 21px;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+
+        /* ================= ORDER FORM ================= */
+
+        .order-form {
+            margin-top: 20px;
+        }
+
+        .order-form h3 {
+            margin-bottom: 12px;
+        }
+
+        .order-form input,
+        .order-form textarea,
+        .order-form select {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        .order-form input:focus,
+        .order-form textarea:focus,
+        .order-form select:focus {
+            border-color: #111;
+        }
+
+        .order-form textarea {
+            height: 85px;
+            resize: none;
+        }
+
+        /* ================= PAYMENT BOX ================= */
+
+        .payment-method-box {
+            margin-top: 10px;
+            padding: 15px;
+            background: #f7f7f7;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+        }
+
+        .payment-method-box h4 {
+            margin: 0 0 10px;
+        }
+
+        .payment-number {
+            background: white;
+            border: 1px solid #ddd;
+            padding: 12px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-weight: bold;
+            text-align: center;
+            font-size: 18px;
+        }
+
+        .copy-btn {
+            width: 100%;
+            border: 0;
+            background: #222;
+            color: white;
+            padding: 10px;
+            border-radius: 7px;
+            cursor: pointer;
+        }
+
+        .payment-note {
+            font-size: 13px;
+            color: #555;
+            line-height: 1.6;
+            margin-top: 10px;
+        }
+
+        .transaction-input {
+            margin-top: 10px;
+        }
+
+        .transaction-input label {
+            display: block;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 6px;
+        }
+
+        /* ================= WHATSAPP ================= */
+
+        .whatsapp {
+            width: 100%;
+            border: 0;
+            background: #25D366;
+            color: white;
+            padding: 13px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .whatsapp:active {
+            transform: scale(0.98);
+        }
+
+        /* ================= PAYMENT SECTION ================= */
+
+        .payment {
+            background: white;
+            border-radius: 14px;
+            padding: 25px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .payment p {
+            line-height: 1.8;
+        }
+
+        .payment-card {
+            display: inline-block;
+            margin: 8px;
+            padding: 15px 25px;
+            border-radius: 10px;
+            background: #f5f5f5;
+            min-width: 180px;
+        }
+
+        .payment-card strong {
+            display: block;
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+
+        /* ================= CONTACT ================= */
+
+        .contact {
+            text-align: center;
+            background: white;
+            padding: 30px 20px;
+        }
+
+        /* ================= FOOTER ================= */
+
+        footer {
+            margin-top: 30px;
+            padding: 30px 20px;
+            text-align: center;
+            background: #111;
+            color: white;
+        }
+
+        /* ================= EMPTY CART ================= */
+
+        .empty-cart {
+            text-align: center;
+            padding: 30px 10px;
+            color: #777;
+        }
+
+        /* ================= MOBILE ================= */
+
+        @media (max-width: 600px) {
+
+            .products {
+                grid-template-columns: 1fr;
+            }
+
+            .hero h1 {
+                font-size: 29px;
+            }
+
+            .logo {
+                font-size: 20px;
+            }
+
+            .cart-box {
+                width: 94%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ================= HEADER ================= -->
+
+    <header>
+
+        <div class="logo">
+            Gaming Guru Shop
+        </div>
+
+        <button class="cart-btn" onclick="openCart()">
+            🛒 কার্ট (<span id="cartCount">0</span>)
+        </button>
+
+    </header>
+
+
+    <!-- ================= HERO ================= -->
+
+    <section class="hero">
+
+        <h1>
+            Gaming Guru Shop-এ স্বাগতম
+        </h1>
+
+        <p>
+            ভালো পণ্য, ভালো দাম এবং সহজ অর্ডার
+        </p>
+
+        <a href="#products" class="shop-button">
+            🛍️ পণ্য দেখুন
+        </a>
+
+    </section>
+
+
+    <!-- ================= PRODUCTS ================= -->
+
+    <section class="section" id="products">
+
+        <h2 class="section-title">
+            🛍️ আমাদের পণ্য
+        </h2>
+
+        <input
+            type="text"
+            id="search"
+            class="search"
+            placeholder="🔎 পণ্য খুঁজুন..."
+            oninput="searchProducts()"
+        >
+
+        <div class="products" id="productList">
+
+
+            <!-- PRODUCT 1 -->
+
+            <div
+                class="product"
+                data-name="SR Safety Helmet"
+            >
+
+                <div class="product-image">
+
+                    <img
+                        src="IMG_20260813_165650.jpg"
+                        alt="SR Safety Helmet"
+                    >
+
+                </div>
+
+                <div class="product-info">
+
+                    <h3>
+                        SR Safety Helmet
+                    </h3>
+
+                    <p>
+                        Industrial Safety Helmet.
+                    </p>
+
+                    <div class="price">
+                        ৳150
+                    </div>
+
+                    <button
+                        class="order-button"
+                        onclick="addToCart('SR Safety Helmet', 150)"
+                    >
+                        🛒 কার্টে যোগ করুন
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- PRODUCT 2 -->
+
+            <div
+                class="product"
+                data-name="Another Product"
+            >
+
+                <div class="product-image">
+                    <span>📷 Product Image</span>
+                </div>
+
+                <div class="product-info">
+
+                    <h3>
+                        Another Product
+                    </h3>
+
+                    <p>
+                        এটি আমাদের দ্বিতীয় পণ্য।
+                    </p>
+
+                    <div class="price">
+                        ৳700
+                    </div>
+
+                    <button
+                        class="order-button"
+                        onclick="addToCart('Another Product', 700)"
+                    >
+                        🛒 কার্টে যোগ করুন
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- PRODUCT 3 -->
+
+            <div
+                class="product"
+                data-name="Third Product"
+            >
+
+                <div class="product-image">
+                    <span>📷 Product Image</span>
+                </div>
+
+                <div class="product-info">
+
+                    <h3>
+                        Third Product
+                    </h3>
+
+                    <p>
+                        এটি আমাদের তৃতীয় পণ্য।
+                    </p>
+
+                    <div class="price">
+                        ৳900
+                    </div>
+
+                    <button
+                        class="order-button"
+                        onclick="addToCart('Third Product', 900)"
+                    >
+                        🛒 কার্টে যোগ করুন
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- PRODUCT 4 -->
+
+            <div
+                class="product"
+                data-name="Fourth Product"
+            >
+
+                <div class="product-image">
+                    <span>📷 Product Image</span>
+                </div>
+
+                <div class="product-info">
+
+                    <h3>
+                        Fourth Product
+                    </h3>
+
+                    <p>
+                        এটি আমাদের চতুর্থ পণ্য।
+                    </p>
+
+                    <div class="price">
+                        ৳1200
+                    </div>
+
+                    <button
+                        class="order-button"
+                        onclick="addToCart('Fourth Product', 1200)"
+                    >
+                        🛒 কার্টে যোগ করুন
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= PAYMENT INFO ================= -->
+
+    <section class="section">
+
+        <div class="payment">
+
+            <h2>
+                💳 পেমেন্ট পদ্ধতি
+            </h2>
+
+            <p>
+                আপনার সুবিধামতো নিচের যেকোনো পেমেন্ট পদ্ধতি ব্যবহার করুন।
+            </p>
+
+            <div class="payment-card">
+                <strong>💵 Cash on Delivery</strong>
+                পণ্য হাতে পেয়ে পেমেন্ট
+            </div>
+
+            <div class="payment-card">
+                <strong>💳 bKash</strong>
+                Personal Number
+                <br>
+                01611901506
+            </div>
+
+            <div class="payment-card">
+                <strong>💰 Nagad</strong>
+                Personal Number
+                <br>
+                01611901506
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= CONTACT ================= -->
+
+    <section class="contact" id="contact">
+
+        <h2>
+            📞 যোগাযোগ
+        </h2>
+
+        <p>
+            অর্ডার বা যেকোনো তথ্যের জন্য আমাদের সাথে যোগাযোগ করুন।
+        </p>
+
+        <p>
+            📱 ফোন: 01309302602
+        </p>
+
+        <p>
+            📱 WhatsApp: +8801611901506
+        </p>
+
+        <p>
+            📍 ঠিকানা: Nawabpur, Dhaka, Bangladesh
+        </p>
+
+    </section>
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer>
+
+        <h3>
+            Gaming Guru Shop
+        </h3>
+
+        <p>
+            আপনার পছন্দের পণ্য সহজেই অর্ডার করুন।
+        </p>
+
+        <p>
+            © 2026 Gaming Guru Shop
+        </p>
+
+    </footer>
+
+
+    <!-- ================= CART PANEL ================= -->
+
+    <div class="cart-box" id="cartBox">
+
+        <div class="cart-header">
+
+            <h2>
+                🛒 আপনার কার্ট
+            </h2>
+
+            <button
+                class="close-btn"
+                onclick="closeCart()"
+            >
+                ✕
+            </button>
+
+        </div>
+
+
+        <div id="cartItems"></div>
+
+
+        <div class="total">
+            মোট: ৳<span id="cartTotal">0</span>
+        </div>
+
+
+        <!-- ================= ORDER FORM ================= -->
+
+        <div class="order-form">
+
+            <h3>
+                📦 অর্ডারের তথ্য
+            </h3>
+
+            <input
+                type="text"
+                id="customerName"
+                placeholder="আপনার নাম"
+            >
+
+            <input
+                type="tel"
+                id="customerPhone"
+                placeholder="মোবাইল নম্বর"
+            >
+
+            <textarea
+                id="customerAddress"
+                placeholder="সম্পূর্ণ ঠিকানা"
+            ></textarea>
+
+
+            <!-- PAYMENT METHOD -->
+
+            <label>
+                <strong>💳 পেমেন্ট পদ্ধতি</strong>
+            </label>
+
+            <select
+                id="paymentMethod"
+                onchange="showPaymentInfo()"
+            >
+
+                <option value="Cash on Delivery">
+                    💵 Cash on Delivery
+                </option>
+
+                <option value="bKash">
+                    💳 bKash Personal
+                </option>
+
+                <option value="Nagad">
+                    💰 Nagad Personal
+                </option>
+
+            </select>
+
+
+            <!-- PAYMENT DETAILS -->
+
+            <div
+                id="paymentInfo"
+                class="payment-method-box"
+                style="display:none;"
+            >
+
+                <h4 id="paymentTitle">
+                    পেমেন্ট তথ্য
+                </h4>
+
+                <div
+                    class="payment-number"
+                    id="paymentNumber"
+                >
+                    01611901506
+                </div>
+
+                <button
+                    type="button"
+                    class="copy-btn"
+                    onclick="copyPaymentNumber()"
+                >
+                    📋 পেমেন্ট নম্বর কপি করুন
+                </button>
+
+                <div class="payment-note">
+
+                    <strong>কীভাবে পেমেন্ট করবেন?</strong>
+                    <br><br>
+
+                    ১. উপরের নম্বরে <strong>Send Money</strong> করুন।
+                    <br>
+                    ২. পেমেন্ট সম্পন্ন হওয়ার পর আপনার
+                    <strong>Transaction ID</strong> নিচে লিখুন।
+                    <br>
+                    ৩. তারপর WhatsApp-এ অর্ডার পাঠান।
+
+                </div>
+
+
+                <div class="transaction-input">
+
+                    <label for="transactionId">
+                        Transaction ID
+                    </label>
+
+                    <input
+                        type="text"
+                        id="transactionId"
+                        placeholder="যেমন: 8A7B6C5D"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- WHATSAPP BUTTON -->
+
+            <button
+                class="whatsapp"
+                onclick="sendWhatsAppOrder()"
+            >
+                📱 WhatsApp-এ অর্ডার নিশ্চিত করুন
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= JAVASCRIPT ================= -->
+
+    <script>
+
+        /* =========================================
+           SHOP SETTINGS
+        ========================================= */
+
+        const WHATSAPP_NUMBER = "8801611901506";
+
+        const BKASH_NUMBER = "01611901506";
+
+        const NAGAD_NUMBER = "01611901506";
+
+
+        /* =========================================
+           CAR}
 
 /* ================= PRODUCTS ================= */
 
