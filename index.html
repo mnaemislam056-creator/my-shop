@@ -2177,7 +2177,27 @@
 
     updateCart();
 
-                     </script>
+                     </script> 
+    <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDHQ-d4S5LU5c7yvHPgQ0YgxZLcYa0evKI",
+    authDomain: "guru-stor-database.firebaseapp.com",
+    projectId: "guru-stor-database",
+    storageBucket: "guru-stor-database.firebasestorage.app",
+    messagingSenderId: "735673899170",
+    appId: "1:735673899170:web:abc4c60a8a7fef5b5fdffb",
+    measurementId: "G-C78SBC0X7C"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  window.firebaseDB = db;
+    </script> 
+    
     </body>
 </html>
                      
