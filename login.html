@@ -1,12 +1,19 @@
 <!DOCTYPE html>
 <html lang="bn">
+
 <head>
+
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
   <title>Login - Gaming Guru Shop</title>
 
   <style>
+
     * {
       box-sizing: border-box;
     }
@@ -42,7 +49,8 @@
       font-size: 15px;
     }
 
-    button {
+    button,
+    .register-link {
       width: 100%;
       padding: 12px;
       margin-top: 10px;
@@ -50,6 +58,9 @@
       border-radius: 8px;
       cursor: pointer;
       font-size: 15px;
+      display: block;
+      text-align: center;
+      text-decoration: none;
     }
 
     #emailLogin {
@@ -57,24 +68,14 @@
       color: white;
     }
 
-    #register {
-      background: #eee;
-      color: #111;
-    }
-
     #googleLogin {
       background: #4285f4;
       color: white;
     }
 
-    #phoneLogin {
-      background: #16a34a;
-      color: white;
-    }
-
-    #sendCode {
-      background: #f59e0b;
-      color: white;
+    .register-link {
+      background: #eee;
+      color: #111;
     }
 
     #message {
@@ -89,9 +90,6 @@
       color: #777;
     }
 
-    #recaptcha-container {
-      margin-top: 10px;
-    }
   </style>
 </head>
 
@@ -99,9 +97,8 @@
 
   <div class="login-box">
 
-    <h2>Login / Register</h2>
+    <h2>Login</h2>
 
-    <!-- Email -->
     <input
       type="email"
       id="email"
@@ -118,46 +115,20 @@
       Login
     </button>
 
-    <a href="register.html"
-   style="display:block; text-align:center; margin-top:10px; padding:12px; background:#eee; color:#111; border-radius:8px; text-decoration:none;">
-  Create New Account / Register
-</a>
-
     <div class="divider">
       অথবা
     </div>
 
-    <!-- Google -->
     <button id="googleLogin">
       Sign in with Google
     </button>
 
-    <div class="divider">
-      অথবা Phone Number
-    </div>
-
-    <!-- Phone -->
-    <input
-      type="tel"
-      id="phoneNumber"
-      placeholder="+8801XXXXXXXXX"
+    <a
+      class="register-link"
+      href="register.html"
     >
-
-    <div id="recaptcha-container"></div>
-
-    <button id="sendCode">
-      Send Verification Code
-    </button>
-
-    <input
-      type="text"
-      id="verificationCode"
-      placeholder="Verification Code"
-    >
-
-    <button id="phoneLogin">
-      Verify & Login
-    </button>
+      Create New Account / Register
+    </a>
 
     <div id="message"></div>
 
@@ -166,138 +137,119 @@
 
   <script type="module">
 
-    import { initializeApp }
-      from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import {
+      initializeApp
+    }
+    from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
     import {
       getAuth,
       GoogleAuthProvider,
       signInWithPopup,
-      signInWithEmailAndPassword,
-      createUserWithEmailAndPassword,
-      RecaptchaVerifier,
-      signInWithPhoneNumber
+      signInWithEmailAndPassword
     }
-      from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-
-    // Firebase Configuration
 
     const firebaseConfig = {
-      apiKey: "AIzaSyDHQ-d4S5LU5c7yvHPgQ0YgxZLcYa0evKI",
-      authDomain: "guru-stor-database.firebaseapp.com",
-      projectId: "guru-stor-database",
-      storageBucket: "guru-stor-database.firebasestorage.app",
-      messagingSenderId: "735673899170",
-      appId: "1:735673899170:web:abc4c60a8a7fef5b5fdffb",
-      measurementId: "G-C78SBC0X7C"
+
+      apiKey:
+        "AIzaSyDHQ-d4S5LU5c7yvHPgQ0YgxZLcYa0evKI",
+
+      authDomain:
+        "guru-stor-database.firebaseapp.com",
+
+      projectId:
+        "guru-stor-database",
+
+      storageBucket:
+        "guru-stor-database.firebasestorage.app",
+
+      messagingSenderId:
+        "735673899170",
+
+      appId:
+        "1:735673899170:web:abc4c60a8a7fef5b5fdffb",
+
+      measurementId:
+        "G-C78SBC0X7C"
+
     };
 
 
-    // Initialize Firebase
+    const app =
+      initializeApp(firebaseConfig);
 
-    const app = initializeApp(firebaseConfig);
+    const auth =
+      getAuth(app);
 
-    const auth = getAuth(app);
 
+    const message =
+      document.getElementById("message");
 
-    // Message
-
-    const message = document.getElementById("message");
 
     function showMessage(text) {
       message.textContent = text;
     }
 
 
-    // =========================
-    // EMAIL LOGIN
-    // =========================
-
     document
       .getElementById("emailLogin")
       .addEventListener("click", async () => {
 
         const email =
-          document.getElementById("email").value.trim();
+          document
+            .getElementById("email")
+            .value
+            .trim();
 
         const password =
-          document.getElementById("password").value;
+          document
+            .getElementById("password")
+            .value;
+
 
         if (!email || !password) {
-          showMessage("Email এবং Password দিন।");
+
+          showMessage(
+            "Email এবং Password দিন।"
+          );
+
           return;
         }
+
 
         try {
 
-          const userCredential =
-            await signInWithEmailAndPassword(
-              auth,
-              email,
-              password
-            );
+          showMessage("Login হচ্ছে...");
+
+
+          await signInWithEmailAndPassword(
+            auth,
+            email,
+            password
+          );
+
 
           showMessage(
-            "Login successful! Welcome " +
-            (userCredential.user.email || "")
+            "Congratulations! Login successful."
           );
+
+
+          setTimeout(() => {
+
+            window.location.href =
+              "index.html";
+
+          }, 1000);
+
 
         } catch (error) {
 
-          showMessage(
-            "Login failed: " + error.message
-          );
-
-        }
-
-      });
-
-
-    // =========================
-    // EMAIL REGISTER
-    // =========================
-
-    document
-      .getElementById("register")
-      .addEventListener("click", async () => {
-
-        const email =
-          document.getElementById("email").value.trim();
-
-        const password =
-          document.getElementById("password").value;
-
-        if (!email || !password) {
-          showMessage("Email এবং Password দিন।");
-          return;
-        }
-
-        if (password.length < 6) {
-          showMessage(
-            "Password কমপক্ষে 6 অক্ষরের হতে হবে।"
-          );
-          return;
-        }
-
-        try {
-
-          const userCredential =
-            await createUserWithEmailAndPassword(
-              auth,
-              email,
-              password
-            );
+          console.error(error);
 
           showMessage(
-            "Registration successful! " +
-            userCredential.user.email
-          );
-
-        } catch (error) {
-
-          showMessage(
-            "Registration failed: " +
+            "Login failed: " +
             error.message
           );
 
@@ -306,12 +258,9 @@
       });
 
 
-    // =========================
-    // GOOGLE LOGIN
-    // =========================
-
     const googleProvider =
       new GoogleAuthProvider();
+
 
     document
       .getElementById("googleLogin")
@@ -319,20 +268,33 @@
 
         try {
 
-          const result =
-            await signInWithPopup(
-              auth,
-              googleProvider
-            );
-
-          const user = result.user;
-
           showMessage(
-            "Google Login successful! Welcome " +
-            (user.displayName || user.email)
+            "Google Login হচ্ছে..."
           );
 
+
+          await signInWithPopup(
+            auth,
+            googleProvider
+          );
+
+
+          showMessage(
+            "Congratulations! Google Login successful."
+          );
+
+
+          setTimeout(() => {
+
+            window.location.href =
+              "index.html";
+
+          }, 1000);
+
+
         } catch (error) {
+
+          console.error(error);
 
           showMessage(
             "Google Login failed: " +
@@ -343,114 +305,8 @@
 
       });
 
-
-    // =========================
-    // PHONE LOGIN
-    // =========================
-
-    let confirmationResult = null;
-
-
-    window.recaptchaVerifier =
-      new RecaptchaVerifier(
-        auth,
-        "recaptcha-container",
-        {
-          size: "normal"
-        }
-      );
-
-
-    // Send verification code
-
-    document
-      .getElementById("sendCode")
-      .addEventListener("click", async () => {
-
-        const phoneNumber =
-          document
-            .getElementById("phoneNumber")
-            .value.trim();
-
-        if (!phoneNumber) {
-          showMessage(
-            "Phone number দিন। যেমন: +8801XXXXXXXXX"
-          );
-          return;
-        }
-
-        try {
-
-          confirmationResult =
-            await signInWithPhoneNumber(
-              auth,
-              phoneNumber,
-              window.recaptchaVerifier
-            );
-
-          showMessage(
-            "Verification code পাঠানো হয়েছে।"
-          );
-
-        } catch (error) {
-
-          showMessage(
-            "Code পাঠানো যায়নি: " +
-            error.message
-          );
-
-        }
-
-      });
-
-
-    // Verify phone code
-
-    document
-      .getElementById("phoneLogin")
-      .addEventListener("click", async () => {
-
-        const code =
-          document
-            .getElementById("verificationCode")
-            .value.trim();
-
-        if (!confirmationResult) {
-          showMessage(
-            "আগে Send Verification Code চাপুন।"
-          );
-          return;
-        }
-
-        if (!code) {
-          showMessage(
-            "Verification Code দিন।"
-          );
-          return;
-        }
-
-        try {
-
-          const result =
-            await confirmationResult.confirm(code);
-
-          showMessage(
-            "Phone Login successful! " +
-            result.user.phoneNumber
-          );
-
-        } catch (error) {
-
-          showMessage(
-            "Verification failed: " +
-            error.message
-          );
-
-        }
-
-      });
-
   </script>
 
 </body>
+
 </html>
